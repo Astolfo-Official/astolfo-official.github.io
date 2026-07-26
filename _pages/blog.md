@@ -4,16 +4,6 @@ permalink: /blog/
 title: Blog
 nav: true
 nav_order: 5
-pagination:
-  enabled: true
-  collection: posts
-  permalink: /page/:num/
-  per_page: 5
-  sort_field: date
-  sort_reverse: true
-  trail:
-    before: 1
-    after: 3
 ---
 
 <div class="post blog-index">
@@ -29,30 +19,23 @@ pagination:
     {% endif %}
   </header>
 
-  {% if site.display_tags and site.display_tags.size > 0 or site.display_categories and site.display_categories.size > 0 %}
-    <nav class="blog-filter-bar" aria-label="Blog filters">
-      {% for tag in site.display_tags %}
-        <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}"><i class="fa-solid fa-hashtag fa-sm"></i>{{ tag }}</a>
-      {% endfor %}
-      {% for category in site.display_categories %}
-        <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}"><i class="fa-solid fa-tag fa-sm"></i>{{ category }}</a>
-      {% endfor %}
-    </nav>
-  {% endif %}
+  <div class="blog-tools">
+    <label class="sr-only" for="blog-search">Search blog posts</label>
+    <input id="blog-search" class="blog-search" type="search" placeholder="Search blog posts..." autocomplete="off">
+    <ul class="blog-category-filters" aria-label="Blog category filters">
+      <li><button class="blog-category-filter is-active" type="button" data-category="all">All</button></li>
+      <li><button class="blog-category-filter" type="button" data-category="math">Math</button></li>
+      <li><button class="blog-category-filter" type="button" data-category="physics">Physics</button></li>
+      <li><button class="blog-category-filter" type="button" data-category="computation">Computation</button></li>
+    </ul>
+  </div>
 
-  {% if page.pagination.enabled %}
-    {% assign postlist = paginator.posts %}
-    {% assign blog_page_offset = paginator.page | minus: 1 | times: paginator.per_page %}
-  {% else %}
-    {% assign postlist = site.posts %}
-    {% assign blog_page_offset = 0 %}
-  {% endif %}
+  {% assign postlist = site.posts %}
   {% assign blog_posts_size = site.posts | size %}
 
   <div class="blog-stream">
     {% for post in postlist %}
-      {% assign post_number_offset = blog_page_offset | plus: forloop.index0 %}
-      {% assign post_number = blog_posts_size | minus: post_number_offset %}
+      {% assign post_number = blog_posts_size | minus: forloop.index0 %}
       {% if post.external_source == blank %}
         {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
       {% else %}
@@ -73,7 +56,10 @@ pagination:
         {% assign post_target = '' %}
       {% endif %}
 
-      <article class="blog-card{% if post.thumbnail %} blog-card--with-image{% endif %}">
+      <article
+        class="blog-card{% if post.thumbnail %} blog-card--with-image{% endif %}"
+        data-categories="{{ post.categories | join: '|' | downcase | escape }}"
+      >
         <div class="blog-card-copy">
           <div class="blog-card-meta">
             <span class="blog-card-number">#{{ post_number }}</span>
@@ -111,8 +97,45 @@ pagination:
       </article>
     {% endfor %}
   </div>
-
-  {% if page.pagination.enabled %}
-    {% include pagination.liquid %}
-  {% endif %}
+  <p class="blog-empty-state" role="status">No posts match your search and category.</p>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("blog-search");
+    const filters = Array.from(document.querySelectorAll(".blog-category-filter"));
+    const posts = Array.from(document.querySelectorAll(".blog-stream .blog-card"));
+    const emptyState = document.querySelector(".blog-empty-state");
+    if (!searchInput || filters.length === 0 || posts.length === 0) return;
+
+    let activeCategory = "all";
+
+    const applyBlogFilters = () => {
+      const query = searchInput.value.trim().toLocaleLowerCase();
+      let visibleCount = 0;
+
+      posts.forEach((post) => {
+        const categories = (post.dataset.categories || "").split("|");
+        const matchesCategory = activeCategory === "all" || categories.includes(activeCategory);
+        const matchesSearch = query === "" || post.textContent.toLocaleLowerCase().includes(query);
+        const isVisible = matchesCategory && matchesSearch;
+
+        post.classList.toggle("is-filtered", !isVisible);
+        if (isVisible) visibleCount += 1;
+      });
+
+      emptyState?.classList.toggle("is-visible", visibleCount === 0);
+    };
+
+    filters.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeCategory = button.dataset.category;
+        filters.forEach((filterButton) => filterButton.classList.toggle("is-active", filterButton === button));
+        applyBlogFilters();
+      });
+    });
+
+    searchInput.addEventListener("input", applyBlogFilters);
+    applyBlogFilters();
+  });
+</script>

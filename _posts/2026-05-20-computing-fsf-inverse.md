@@ -5,7 +5,7 @@ post_title: Computing \(FSF^+\)
 date: 2026-05-20
 description: A numerical linear algebra note on generalized inverses, SVD, scipy.linalg.solve, Cholesky decomposition, and LU decomposition for \(FSF^+\).
 tags: numerical-linear-algebra scipy matrix-computation
-categories: math
+categories: computation
 ---
 
 Consider the matrix expression $A = F S F^+$, where $F$ is a general matrix, not necessarily square, $S$ is a given diagonal matrix, and $F^+$ denotes the Moore-Penrose generalized inverse which satisfies 

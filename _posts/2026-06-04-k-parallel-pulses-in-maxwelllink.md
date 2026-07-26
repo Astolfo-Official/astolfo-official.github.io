@@ -5,7 +5,7 @@ post_title: k-Parallel Pulses in MaxwellLink
 date: 2026-06-04
 description: A technical note on how MaxwellLink's k_parallel_pulse builds real-space molecular drives and mode-space photonic drives in the multimode Fabry-Perot cavity solver.
 tags: MaxwellLink polaritonics cavity-qed numerical-simulation
-categories: physics
+categories: computation
 ---
 
 ## Signal-analysis background
