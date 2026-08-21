@@ -1,8 +1,8 @@
 metadata:
-  last_updated: '2026-07-29'
+  last_updated: '2026-08-21'
 papers:
   8WzTBusAAAAJ:IjCSPb-OGe4C:
-    citations: 13
+    citations: 14
     title: 'Selective excitation of IR-Inactive modes via vibrational polaritons: Insights from atomistic simulations'
     year: '2025'
   8WzTBusAAAAJ:WF5omc3nYNoC:
@@ -10,15 +10,15 @@ papers:
     title: 'FermiLink: A Unified Agent Framework for Multidomain Autonomous Scientific Simulations'
     year: '2026'
   8WzTBusAAAAJ:YsMSGLbcyi4C:
-    citations: 2
+    citations: 3
     title: "MaxwellLink: A Unified Framework for Self-Consistent Light\u2013Matter Simulations"
     year: '2026'
   8WzTBusAAAAJ:_FxGoFyzp5QC:
-    citations: 0
+    citations: 1
     title: Nonlinear Freezing of Vibrational Polariton Transport via Mesoscale Simulations
     year: '2026'
   8WzTBusAAAAJ:qjMakFHDy7sC:
-    citations: 5
+    citations: 6
     title: On the entanglement of chromophore and solvent orbitals
     year: '2025'
   8WzTBusAAAAJ:u5HHmVD_uO8C:
