@@ -81,10 +81,6 @@
       {% assign title_link = entry.url %}
     {% elsif entry.doi %}
       {% assign title_link = entry.doi | prepend: 'https://doi.org/' %}
-    {% elsif entry.arxiv %}
-      {% assign title_link = entry.arxiv | prepend: 'https://arxiv.org/abs/' %}
-    {% elsif entry.eprint and entry.archiveprefix == 'arXiv' %}
-      {% assign title_link = entry.eprint | prepend: 'https://arxiv.org/abs/' %}
     {% elsif entry.html %}
       {% if entry.html contains '://' %}
         {% assign title_link = entry.html %}
@@ -247,8 +243,24 @@
     {% if hook_exists == 'true' %}
       {% include hook/bib.liquid %}
     {% endif %}
+    {% assign arxiv_link = '' %}
+    {% if entry.arxiv %}
+      {% if entry.arxiv contains '://' %}
+        {% assign arxiv_link = entry.arxiv %}
+      {% else %}
+        {% assign arxiv_link = entry.arxiv | prepend: 'https://arxiv.org/abs/' %}
+      {% endif %}
+    {% endif %}
+    {% assign chemxiv_link = '' %}
+    {% if entry.chemxiv %}
+      {% if entry.chemxiv contains '://' %}
+        {% assign chemxiv_link = entry.chemxiv %}
+      {% else %}
+        {% assign chemxiv_link = entry.chemxiv | prepend: 'https://doi.org/' %}
+      {% endif %}
+    {% endif %}
     {% assign has_resource_links = false %}
-    {% if entry.data or entry.code or entry.site or entry.website %}
+    {% if entry.data or entry.code or entry.site or entry.website or arxiv_link != blank or chemxiv_link != blank %}
       {% assign has_resource_links = true %}
     {% endif %}
     <div class="periodical">
@@ -292,6 +304,12 @@
         {% if site_link %}
           <a href="{% if site_link contains '://' %}{{ site_link }}{% else %}{{ site_link | relative_url }}{% endif %}" class="resource-link" role="button">Site</a>
         {% endif %}
+        {% if arxiv_link != blank %}
+          <a href="{{ arxiv_link }}" class="resource-link" role="button" aria-label="View preprint on arXiv">arXiv</a>
+        {% endif %}
+        {% if chemxiv_link != blank %}
+          <a href="{{ chemxiv_link }}" class="resource-link" role="button" aria-label="View preprint on ChemRxiv">ChemRxiv</a>
+        {% endif %}
       </div>
     {% endif %}
 
@@ -304,9 +322,6 @@
       {% endif %}
       {% if entry.abstract %}
         <a class="abstract btn btn-sm z-depth-0" role="button">Abs</a>
-      {% endif %}
-      {% if entry.arxiv %}
-        <a href="http://arxiv.org/abs/{{ entry.arxiv }}" class="btn btn-sm z-depth-0" role="button">arXiv</a>
       {% endif %}
       {% if entry.hal %}
         <a href="https://hal.science/{{ entry.hal }}" class="btn btn-sm z-depth-0" role="button">HAL</a>
