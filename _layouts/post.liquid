@@ -1,14 +1,15 @@
 ---
 layout: default
 ---
-{% assign year = page.date | date: '%Y' %}
 {% assign tags = page.tags | join: '' %}
 {% assign categories = page.categories | join: '' %}
 {% assign url_beginning = page.url | slice: 0, 6 %}
-{% if page.external_source == blank %}
-  {% assign read_time = content | number_of_words | divided_by: 180 | plus: 1 %}
-{% else %}
-  {% assign read_time = page.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+{% assign is_blog_post = false %}
+{% assign is_news_post = false %}
+{% if url_beginning == '/blog/' %}
+  {% assign is_blog_post = true %}
+{% elsif url_beginning == '/news/' %}
+  {% assign is_news_post = true %}
 {% endif %}
 
 {% if page._styles %}
@@ -18,47 +19,73 @@ layout: default
   </style>
 {% endif %}
 
-<div class="post blog-post-detail">
-  {% if url_beginning == '/blog/' %}
-    <nav class="blog-post-back" aria-label="Blog navigation">
-      <a href="{{ '/blog/' | relative_url }}"><i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i> Blog</a>
+<div class="post blog-post-detail{% if is_news_post %} news-post-detail{% endif %}">
+  {% if is_blog_post or is_news_post %}
+    <nav
+      class="blog-post-back{% if is_news_post %} news-post-back{% endif %}"
+      aria-label="{% if is_news_post %}News{% else %}Blog{% endif %} navigation"
+    >
+      <a href="{% if is_news_post %}{{ '/news/' | relative_url }}{% else %}{{ '/blog/' | relative_url }}{% endif %}">
+        <i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i>
+        {% if is_news_post %}Back to News{% else %}Blog{% endif %}
+      </a>
     </nav>
   {% endif %}
 
-  <header class="blog-post-hero">
-    <h1 class="post-title">{{ page.title }}</h1>
-    {% if page.description %}
-      <p class="blog-post-description">{{ page.description }}</p>
-    {% endif %}
-  </header>
+  {% if is_news_post %}
+    <header class="news-post-hero{% unless page.news_image %} news-post-hero--text-only{% endunless %}">
+      <div class="news-post-hero__copy">
+        <p class="news-post-eyebrow">
+          <span>News</span>
+          <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%b %-d, %Y' }}</time>
+        </p>
+        <h1 class="post-title">{{ page.title }}</h1>
+        {% if page.description %}
+          {% assign news_summary = page.news_summary | default: page.description %}
+          <p class="blog-post-description">{{ news_summary | markdownify | remove: '<p>' | remove: '</p>' }}</p>
+        {% endif %}
+      </div>
 
-  {% unless url_beginning == '/blog/' %}
-    <dl class="blog-post-facts" aria-label="Post metadata">
-      <div>
-        <dt>Published</dt>
-        <dd>{{ page.date | date: '%b %-d, %Y' }}</dd>
-      </div>
-      <div>
-        <dt>Reading Time</dt>
-        <dd>{{ read_time }} min</dd>
-      </div>
-      {% assign last_date = page.last_modified_at | default: page.last_updated %}
-      {% if last_date %}
-        <div>
-          <dt>Updated</dt>
-          <dd>{{ last_date | date: '%b %-d, %Y' }}</dd>
+      {% if page.news_image %}
+        <div class="news-post-hero__media">
+          {% if page.news_image contains '://' %}
+            <img
+              class="news-post-hero__image"
+              src="{{ page.news_image }}"
+              alt="{{ page.news_image_alt | default: page.title }}"
+              loading="eager"
+            >
+          {% else %}
+            {% assign news_image_path = page.news_image %}
+            {% unless news_image_path contains '/' %}
+              {% assign news_image_path = news_image_path | prepend: '/assets/img/publication_preview/' %}
+            {% endunless %}
+            {% assign news_image_alt = page.news_image_alt | default: page.title %}
+            {%
+              include figure.liquid
+              loading="eager"
+              path=news_image_path
+              sizes="(min-width: 769px) 420px, 90vw"
+              class="news-post-hero__image"
+              avoid_scaling=true
+              alt=news_image_alt
+            %}
+          {% endif %}
         </div>
       {% endif %}
-      {% if page.author %}
-        <div>
-          <dt>Author</dt>
-          <dd>{{ page.author }}</dd>
-        </div>
+    </header>
+  {% else %}
+    <header class="blog-post-hero">
+      <h1 class="post-title">{{ page.title }}</h1>
+      {% if page.description %}
+        <p class="blog-post-description">{{ page.description }}</p>
       {% endif %}
-    </dl>
+    </header>
+  {% endif %}
 
+  {% if is_blog_post == false and is_news_post == false %}
     <div class="blog-post-tags">
-      <span><i class="fa-solid fa-calendar fa-sm"></i>{{ year }}</span>
+      <span><i class="fa-solid fa-calendar fa-sm"></i>{{ page.date | date: '%b %-d, %Y' }}</span>
       {% if tags != '' %}
         {% for tag in page.tags %}
           <span><i class="fa-solid fa-hashtag fa-sm"></i>{{ tag }}</span>
@@ -70,9 +97,9 @@ layout: default
         {% endfor %}
       {% endif %}
     </div>
-  {% endunless %}
+  {% endif %}
 
-  <article class="post-content blog-post-content">
+  <article class="post-content blog-post-content{% if is_news_post %} news-post-content{% endif %}">
     {% if page.toc and page.toc.beginning %}
       <div id="table-of-contents">
         {% toc %}
@@ -80,6 +107,9 @@ layout: default
       <hr>
     {% endif %}
     <div id="markdown-content">
+      {% if is_news_post %}
+        <h2 class="news-post-content__heading">{{ page.news_section_title | default: 'About this update' }}</h2>
+      {% endif %}
       {{ content }}
     </div>
   </article>
@@ -90,7 +120,9 @@ layout: default
 
   {% if page.related_publications %}
     <div class="related-publications publications-page">
-      <h2 class="related-publications__heading">References</h2>
+      <h2 class="related-publications__heading">
+        {% if is_news_post %}Related research{% else %}References{% endif %}
+      </h2>
       <div class="publications">
         {% bibliography --group_by none --cited_in_order %}
       </div>
@@ -141,6 +173,60 @@ layout: default
           .catch(assignFallbackNumbers);
       });
     </script>
+  {% endif %}
+
+  {% if is_news_post %}
+    {% assign news_detail_items = site.news | where_exp: 'item', 'item.inline != true' | sort: 'date' %}
+    {% assign previous_news = null %}
+    {% assign next_news = null %}
+    {% assign previous_candidate = null %}
+    {% assign current_news_found = false %}
+    {% for news_item in news_detail_items %}
+      {% if current_news_found and next_news == null %}
+        {% assign next_news = news_item %}
+      {% endif %}
+      {% if news_item.url == page.url %}
+        {% assign previous_news = previous_candidate %}
+        {% assign current_news_found = true %}
+      {% elsif current_news_found == false %}
+        {% assign previous_candidate = news_item %}
+      {% endif %}
+    {% endfor %}
+
+    {% if previous_news or next_news %}
+      <nav class="section-navigation news-post-navigation" aria-label="News navigation" data-section-navigation>
+        {% if previous_news %}
+          <a
+            class="section-navigation__link section-navigation__link--previous"
+            href="{{ previous_news.url | relative_url }}"
+            aria-label="Previous news: {{ previous_news.title }}"
+            aria-keyshortcuts="ArrowLeft"
+            data-section-previous
+          >
+            <i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i>
+            <span>
+              <small>Previous news</small>
+              <strong>{{ previous_news.title }}</strong>
+            </span>
+          </a>
+        {% endif %}
+        {% if next_news %}
+          <a
+            class="section-navigation__link section-navigation__link--next"
+            href="{{ next_news.url | relative_url }}"
+            aria-label="Next news: {{ next_news.title }}"
+            aria-keyshortcuts="ArrowRight"
+            data-section-next
+          >
+            <span>
+              <small>Next news</small>
+              <strong>{{ next_news.title }}</strong>
+            </span>
+            <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i>
+          </a>
+        {% endif %}
+      </nav>
+    {% endif %}
   {% endif %}
 
   {% comment %}

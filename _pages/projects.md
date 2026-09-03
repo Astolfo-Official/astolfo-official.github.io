@@ -13,6 +13,8 @@ _styles: |
   .research-page {
     --research-accent: #2f6f73;
     --research-accent-soft: rgba(47, 111, 115, 0.09);
+    --research-card-shadow: 0 10px 28px rgba(17, 46, 54, 0.1);
+    --research-card-shadow-hover: 0 16px 38px rgba(17, 46, 54, 0.16);
     margin-top: 0;
   }
 
@@ -23,9 +25,13 @@ _styles: |
 
   .research-entry {
     padding: 0.9rem;
-    border: 1px solid var(--global-divider-color);
+    border: 1px solid color-mix(in srgb, var(--research-accent) 22%, var(--global-divider-color));
+    border-left: 3px solid color-mix(in srgb, var(--research-accent) 72%, transparent);
     border-radius: 8px;
-    background: var(--global-card-bg-color);
+    background:
+      linear-gradient(115deg, var(--research-accent-soft), rgba(252, 126, 175, 0.045) 52%, transparent 84%),
+      var(--global-card-bg-color);
+    box-shadow: var(--research-card-shadow);
     transition:
       border-color 160ms ease,
       box-shadow 160ms ease,
@@ -34,7 +40,8 @@ _styles: |
 
   .research-entry:hover {
     border-color: color-mix(in srgb, var(--research-accent) 42%, var(--global-divider-color));
-    box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.08);
+    border-left-color: color-mix(in srgb, var(--research-accent) 72%, transparent);
+    box-shadow: var(--research-card-shadow-hover);
     transform: translateY(-2px);
   }
 
@@ -116,6 +123,8 @@ _styles: |
   html[data-theme="dark"] .research-page {
     --research-accent: #74c7c0;
     --research-accent-soft: rgba(116, 199, 192, 0.13);
+    --research-card-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+    --research-card-shadow-hover: 0 18px 42px rgba(0, 0, 0, 0.36);
   }
 
   @media (max-width: 767.98px) {

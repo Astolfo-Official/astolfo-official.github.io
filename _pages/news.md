@@ -11,43 +11,15 @@ _styles: |
   }
 
   .news-page {
-    --news-accent: #2f6f73;
+    --news-accent: var(--global-theme-color);
+    --news-accent-soft: rgba(252, 126, 175, 0.1);
+    --news-card-shadow: 0 10px 28px rgba(17, 46, 54, 0.1);
+    --news-card-shadow-hover: 0 16px 38px rgba(252, 126, 175, 0.24);
     margin-top: 0;
   }
 
   .news-page .news {
     margin-top: 1.35rem;
-  }
-
-  .news-tools {
-    margin: 1.15rem 0 1.35rem;
-  }
-
-  .news-search-input {
-    width: min(100%, 19rem);
-    min-height: 2.5rem;
-    padding: 0.62rem 0.8rem;
-    border: 1px solid var(--global-divider-color);
-    border-radius: 8px;
-    background: var(--global-card-bg-color);
-    color: var(--global-text-color);
-    font-size: 0.9rem;
-  }
-
-  .news-search-input:focus {
-    border-color: var(--global-theme-color);
-    outline: 0;
-    box-shadow: 0 0 0 0.18rem rgba(252, 126, 175, 0.14);
-  }
-
-  .news-search-empty {
-    display: none;
-    margin: 1rem 0 0;
-    color: var(--global-text-color-light);
-  }
-
-  .news-search-empty.is-visible {
-    display: block;
   }
 
   .news-page .news .table-responsive {
@@ -71,9 +43,11 @@ _styles: |
     align-items: center;
     min-height: 3.15rem;
     padding: 0.65rem 0.85rem;
-    border: 1px solid var(--global-divider-color);
+    border: 1px solid color-mix(in srgb, var(--news-accent) 22%, var(--global-divider-color));
+    border-left: 3px solid color-mix(in srgb, var(--news-accent) 72%, transparent);
     border-radius: 8px;
-    background: var(--global-card-bg-color);
+    background: linear-gradient(115deg, var(--news-accent-soft) 0%, transparent 100%), var(--global-card-bg-color);
+    box-shadow: var(--news-card-shadow);
     transition:
       border-color 160ms ease,
       box-shadow 160ms ease,
@@ -81,8 +55,8 @@ _styles: |
   }
 
   .news-page .news tr:hover {
-    border-color: color-mix(in srgb, var(--news-accent) 42%, var(--global-divider-color));
-    box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.08);
+    border-color: var(--news-accent);
+    box-shadow: var(--news-card-shadow-hover);
     transform: translateY(-2px);
   }
 
@@ -143,12 +117,10 @@ _styles: |
     margin-bottom: 0;
   }
 
-  .news-page .news tr.news-search-hidden {
-    display: none;
-  }
-
   html[data-theme="dark"] .news-page {
-    --news-accent: #74c7c0;
+    --news-accent-soft: rgba(252, 126, 175, 0.13);
+    --news-card-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+    --news-card-shadow-hover: 0 18px 42px rgba(252, 126, 175, 0.28);
   }
 
   @media (max-width: 640px) {
@@ -166,33 +138,6 @@ _styles: |
     <p>Research milestones, software releases, publications, and occasional notes from life outside the lab.</p>
   </header>
 
-  <div class="news-tools">
-    <input id="news-search" class="news-search-input" type="search" placeholder="Search news" aria-label="Search news">
-    <p id="news-search-empty" class="news-search-empty">No matching news.</p>
-  </div>
-
 {% include news.liquid %}
 
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.getElementById("news-search");
-    const emptyState = document.getElementById("news-search-empty");
-    const entries = Array.from(document.querySelectorAll(".news-page .news tbody tr"));
-    if (!searchInput || entries.length === 0) return;
-
-    searchInput.addEventListener("input", function () {
-      const query = searchInput.value.trim().toLowerCase();
-      let visibleCount = 0;
-
-      entries.forEach((entry) => {
-        const matches = entry.textContent.toLowerCase().includes(query);
-        entry.classList.toggle("news-search-hidden", !matches);
-        if (matches) visibleCount += 1;
-      });
-
-      if (emptyState) emptyState.classList.toggle("is-visible", visibleCount === 0);
-    });
-  });
-</script>

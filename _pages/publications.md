@@ -17,8 +17,12 @@ _styles: |
 
   .publications-page {
     --publication-accent-soft: rgba(252, 126, 175, 0.1);
-    --publication-teal: #2f6f73;
-    --publication-teal-soft: rgba(47, 111, 115, 0.09);
+    --publication-chart-start: #f09abb;
+    --publication-chart-end: #9f99d1;
+    --publication-chart-surface: rgba(185, 182, 223, 0.12);
+    --publication-chart-shadow: rgba(179, 139, 191, 0.18);
+    --publication-card-shadow: 0 10px 28px rgba(17, 46, 54, 0.1);
+    --publication-card-shadow-hover: 0 16px 38px rgba(252, 126, 175, 0.24);
     margin-top: 0;
   }
 
@@ -155,9 +159,11 @@ _styles: |
   .publications-page .publications ol.bibliography > li {
     margin-bottom: 0;
     padding: clamp(0.9rem, 2vw, 1.05rem);
-    border: 1px solid var(--global-divider-color);
+    border: 1px solid color-mix(in srgb, var(--global-theme-color) 22%, var(--global-divider-color));
+    border-left: 3px solid color-mix(in srgb, var(--global-theme-color) 72%, transparent);
     border-radius: 8px;
-    background: var(--global-card-bg-color);
+    background: linear-gradient(115deg, var(--publication-accent-soft) 0%, transparent 100%), var(--global-card-bg-color);
+    box-shadow: var(--publication-card-shadow);
     transition:
       border-color 160ms ease,
       box-shadow 160ms ease,
@@ -165,8 +171,9 @@ _styles: |
   }
 
   .publications-page .publications ol.bibliography > li:hover {
-    border-color: color-mix(in srgb, var(--publication-teal) 42%, var(--global-divider-color));
-    box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.08);
+    border-color: var(--global-theme-color);
+    border-left-color: var(--global-theme-color);
+    box-shadow: var(--publication-card-shadow-hover);
     transform: translateY(-2px);
   }
 
@@ -189,9 +196,7 @@ _styles: |
   .publications-page .publications ol.bibliography li .abbr .preview-container {
     border: 1px solid var(--global-divider-color);
     border-radius: 6px;
-    background:
-      linear-gradient(135deg, var(--publication-teal-soft), rgba(182, 74, 107, 0.04)),
-      var(--global-bg-color);
+    background: linear-gradient(135deg, var(--publication-accent-soft), transparent), var(--global-bg-color);
   }
 
   .publications-page .publications ol.bibliography li .resource-links .resource-link,
@@ -358,7 +363,9 @@ _styles: |
     overflow-x: auto;
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
-    background: color-mix(in srgb, var(--publication-teal-soft) 58%, var(--global-card-bg-color));
+    background:
+      linear-gradient(135deg, rgba(252, 126, 175, 0.05), var(--publication-chart-surface)),
+      var(--global-card-bg-color);
     list-style: none;
   }
 
@@ -411,8 +418,8 @@ _styles: |
     width: clamp(0.72rem, 48%, 1.35rem);
     height: max(0.24rem, var(--publication-bar-ratio, 0%));
     border-radius: 999px 999px 0.25rem 0.25rem;
-    background: linear-gradient(180deg, var(--global-theme-color), var(--publication-teal));
-    box-shadow: 0 5px 14px rgba(47, 111, 115, 0.16);
+    background: linear-gradient(180deg, var(--publication-chart-start), var(--publication-chart-end));
+    box-shadow: 0 5px 14px var(--publication-chart-shadow);
     transition:
       height 240ms ease,
       opacity 180ms ease;
@@ -455,8 +462,13 @@ _styles: |
   }
 
   html[data-theme="dark"] .publications-page {
-    --publication-teal: #74c7c0;
-    --publication-teal-soft: rgba(116, 199, 192, 0.13);
+    --publication-accent-soft: rgba(252, 126, 175, 0.13);
+    --publication-chart-start: #f3a5c3;
+    --publication-chart-end: #aaa4da;
+    --publication-chart-surface: rgba(188, 185, 228, 0.13);
+    --publication-chart-shadow: rgba(243, 165, 195, 0.2);
+    --publication-card-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+    --publication-card-shadow-hover: 0 18px 42px rgba(252, 126, 175, 0.28);
   }
 
   @media (max-width: 960px) {

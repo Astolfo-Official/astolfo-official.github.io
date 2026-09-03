@@ -2,7 +2,7 @@
 layout: book-review
 title: Baby Math on Quantum Chemistry
 author: Xinwei Ji
-cover: assets/img/book_covers/baby_math_on_quantum_chemistry.png
+cover: assets/img/book_covers/baby_math_on_quantum_chemistry.jpg
 categories:
   - notes
   - chemistry

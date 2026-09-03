@@ -102,7 +102,12 @@
             display: block;
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
+            object-position: center;
+
+            &.is-wider-than-frame {
+              object-fit: fill;
+            }
           }
         }
       }
@@ -309,8 +314,9 @@
 }
 
 .related-publications {
-  --publication-teal: #2f6f73;
-  --publication-teal-soft: rgba(47, 111, 115, 0.09);
+  --publication-accent-soft: rgba(252, 126, 175, 0.1);
+  --publication-card-shadow: 0 10px 28px rgba(17, 46, 54, 0.1);
+  --publication-card-shadow-hover: 0 16px 38px rgba(252, 126, 175, 0.24);
   margin-top: 2.6rem;
 
   .related-publications__heading {
@@ -364,17 +370,20 @@
   ol.bibliography > li {
     margin-bottom: 0;
     padding: clamp(1rem, 2.4vw, 1.25rem);
-    border: 1px solid var(--global-divider-color);
+    border: 1px solid color-mix(in srgb, var(--global-theme-color) 22%, var(--global-divider-color));
+    border-left: 3px solid color-mix(in srgb, var(--global-theme-color) 72%, transparent);
     border-radius: 8px;
-    background: var(--global-card-bg-color);
+    background: linear-gradient(115deg, var(--publication-accent-soft) 0%, transparent 100%), var(--global-card-bg-color);
+    box-shadow: var(--publication-card-shadow);
     transition:
       border-color 160ms ease,
       box-shadow 160ms ease,
       transform 160ms ease;
 
     &:hover {
-      border-color: color-mix(in srgb, var(--publication-teal) 42%, var(--global-divider-color));
-      box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.08);
+      border-color: var(--global-theme-color);
+      border-left-color: var(--global-theme-color);
+      box-shadow: var(--publication-card-shadow-hover);
       transform: translateY(-2px);
     }
   }
@@ -399,7 +408,7 @@
     .abbr .preview-container {
       border: 1px solid var(--global-divider-color);
       border-radius: 6px;
-      background: linear-gradient(135deg, var(--publication-teal-soft), rgba(182, 74, 107, 0.04)), var(--global-bg-color);
+      background: linear-gradient(135deg, var(--publication-accent-soft), transparent), var(--global-bg-color);
     }
 
     .resource-links .resource-link,
@@ -420,8 +429,9 @@
 }
 
 html[data-theme="dark"] .related-publications {
-  --publication-teal: #74c7c0;
-  --publication-teal-soft: rgba(116, 199, 192, 0.13);
+  --publication-accent-soft: rgba(252, 126, 175, 0.13);
+  --publication-card-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+  --publication-card-shadow-hover: 0 18px 42px rgba(252, 126, 175, 0.28);
 }
 
 .citation,

@@ -2,7 +2,7 @@
 layout: book-review
 title: Note on Functional Analysis
 author: Xinwei Ji
-cover: assets/img/book_covers/note_on_functional_analysis.png
+cover: assets/img/book_covers/note_on_functional_analysis.jpg
 categories:
   - notes
   - mathematics

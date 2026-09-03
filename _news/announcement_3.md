@@ -2,12 +2,15 @@
 layout: post
 title: First contribution to i-PI!
 date: 2026-05-08
+description: My first contribution to i-PI has been included in i-PI v3.2.0.
+news_summary: My first contribution to i-PI has been included in [i-PI v3.2.0](https://github.com/i-pi/i-pi/releases/tag/v3.2.0).
 inline: false
 related_posts: false
 related_publications: true
+news_image: jiTwodimensionalIRRaman2026.png
+news_image_alt: Diagram from the related two-dimensional IR-Raman spectroscopy publication
+news_section_title: About the contribution
 ---
-
-My first contribution to i-PI has been included in [i-PI v3.2.0](https://github.com/i-pi/i-pi/releases/tag/v3.2.0)!
 
 The contribution implements the code functionality developed for our preprint on two-dimensional IR-Raman spectroscopy of vibrational polaritons {% cite jiTwodimensionalIRRaman2026 %}.
 

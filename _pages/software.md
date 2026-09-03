@@ -13,6 +13,9 @@ _styles: |
 
   .software-page {
     --software-accent: #2f6f73;
+    --software-accent-soft: rgba(47, 111, 115, 0.09);
+    --software-card-shadow: 0 10px 28px rgba(17, 46, 54, 0.1);
+    --software-card-shadow-hover: 0 16px 38px rgba(17, 46, 54, 0.16);
     margin-top: 0;
   }
 
@@ -27,9 +30,13 @@ _styles: |
     min-width: 0;
     height: 100%;
     padding: 0.9rem;
-    border: 1px solid var(--global-divider-color);
+    border: 1px solid color-mix(in srgb, var(--software-accent) 22%, var(--global-divider-color));
+    border-left: 3px solid color-mix(in srgb, var(--software-accent) 72%, transparent);
     border-radius: 8px;
-    background: var(--global-card-bg-color);
+    background:
+      linear-gradient(145deg, var(--software-accent-soft), rgba(252, 126, 175, 0.045) 54%, transparent 84%),
+      var(--global-card-bg-color);
+    box-shadow: var(--software-card-shadow);
     transition:
       border-color 160ms ease,
       box-shadow 160ms ease,
@@ -38,7 +45,8 @@ _styles: |
 
   .software-card:hover {
     border-color: color-mix(in srgb, var(--software-accent) 42%, var(--global-divider-color));
-    box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.08);
+    border-left-color: color-mix(in srgb, var(--software-accent) 72%, transparent);
+    box-shadow: var(--software-card-shadow-hover);
     transform: translateY(-2px);
   }
 
@@ -120,6 +128,9 @@ _styles: |
 
   html[data-theme="dark"] .software-page {
     --software-accent: #74c7c0;
+    --software-accent-soft: rgba(116, 199, 192, 0.13);
+    --software-card-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+    --software-card-shadow-hover: 0 18px 42px rgba(0, 0, 0, 0.36);
   }
 
   @media (max-width: 960px) {

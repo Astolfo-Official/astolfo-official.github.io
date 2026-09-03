@@ -1,0 +1,37 @@
+{% assign section_pages = site.pages | where: 'nav', true | sort: 'nav_order' %}
+{% assign home_page = site.pages | where: 'permalink', '/' | first %}
+{% assign section_previous = null %}
+{% assign section_next = null %}
+{% assign is_main_section = false %}
+
+{% if page.nav %}
+  {% assign is_main_section = true %}
+  {% assign previous_candidate = home_page %}
+  {% assign current_section_found = false %}
+
+  {% for section_page in section_pages %}
+    {% if current_section_found and section_next == null %}
+      {% assign section_next = section_page %}
+    {% endif %}
+
+    {% if section_page.url == page.url %}
+      {% assign section_previous = previous_candidate %}
+      {% assign current_section_found = true %}
+    {% elsif current_section_found == false %}
+      {% assign previous_candidate = section_page %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if is_main_section %}
+  <div
+    hidden
+    data-section-navigation
+    {% if section_previous %}
+      data-section-previous-url="{{ section_previous.url | relative_url }}"
+    {% endif %}
+    {% if section_next %}
+      data-section-next-url="{{ section_next.url | relative_url }}"
+    {% endif %}
+  ></div>
+{% endif %}
