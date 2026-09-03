@@ -602,8 +602,10 @@ ul.timeline li::before {
     color: var(--cv-muted);
   }
 
-  .cv-section-card--two-column > div {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .cv-section-card--three-column > div {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(6, auto);
+    grid-auto-flow: column;
   }
 
   .date-column .badge {
@@ -697,6 +699,11 @@ html[data-theme="dark"] .cv--research-profile {
     .cv-overview-grid {
       grid-template-columns: 1fr;
     }
+
+    .cv-section-card--three-column > div {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(9, auto);
+    }
   }
 }
 
@@ -746,8 +753,10 @@ html[data-theme="dark"] .cv--research-profile {
       margin-bottom: 0;
     }
 
-    .cv-section-card--two-column > div {
+    .cv-section-card--three-column > div {
       grid-template-columns: 1fr;
+      grid-template-rows: none;
+      grid-auto-flow: row;
     }
   }
 }

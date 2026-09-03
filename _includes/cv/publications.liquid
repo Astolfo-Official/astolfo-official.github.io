@@ -2,7 +2,7 @@
   Unified publications entry renderer for both formats
 {% endcomment %}
 
-<ul class="card-text font-weight-light list-group list-group-flush">
+<ul class="font-weight-light list-group list-group-flush">
   {% assign years = entries | map: 'releaseDate' | uniq | sort | reverse %}
   {% assign publication_count = entries | size %}
   {% assign publication_index = publication_count | plus: 1 %}

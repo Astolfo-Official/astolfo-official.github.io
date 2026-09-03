@@ -141,9 +141,13 @@ cv:
         url: /projects/aiagents/
 
     Personal Best:
-      - label: 800 track
+      - label: 100
         details: TBD
-      - label: 800 road
+      - label: 200
+        details: TBD
+      - label: 400
+        details: TBD
+      - label: 800
         details: TBD
       - label: 1000 track
         details: "3:27 (Date: 2023-05-25)"

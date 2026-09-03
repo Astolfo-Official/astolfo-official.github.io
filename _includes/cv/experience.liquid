@@ -5,7 +5,7 @@
   - JSONResume: name, position, startDate, endDate, location, url, summary, highlights
 {% endcomment %}
 
-<ul class="card-text font-weight-light list-group list-group-flush">
+<ul class="font-weight-light list-group list-group-flush">
   {% for entry in entries %}
     <li class="list-group-item">
       <div class="row">
@@ -76,8 +76,12 @@
 
           {% if date != '' or location != '' %}
             <p class="cv-entry-meta ml-1 ml-md-4">
-              {% if date != '' %}<span>{{ date }}</span>{% endif %}
-              {% if date != '' and location != '' %}<span aria-hidden="true">·</span>{% endif %}
+              {% if date != '' -%}
+                <span>{{ date }}</span>
+              {%- endif %}
+              {% if date != '' and location != '' -%}
+                <span aria-hidden="true">·</span>
+              {%- endif %}
               {% if location != '' %}
                 <span><i class="fa-solid fa-location-dot iconlocation"></i> {{ location }}</span>
               {% endif %}

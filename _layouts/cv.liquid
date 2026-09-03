@@ -156,7 +156,7 @@ layout: default
           {% endif %}
 
           <a class="anchor" id="{{ section_title | slugify }}"></a>
-          <section class="card mt-3 p-3 cv-section-card{% if section_title == 'Personal Best' %} cv-section-card--two-column{% endif %}">
+          <section class="card mt-3 p-3 cv-section-card{% if section_title == 'Personal Best' %} cv-section-card--three-column{% endif %}">
             <h3 class="card-title font-weight-medium">{{ section_title }}</h3>
             <div>
               {% if section_title == 'Education' %}
