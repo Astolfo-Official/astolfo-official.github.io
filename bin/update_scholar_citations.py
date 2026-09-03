@@ -56,6 +56,7 @@ def get_scholar_citations() -> None:
                 if (
                     existing_data["metadata"]["last_updated"] == today
                     and existing_data.get("citations_by_year")
+                    and "h_index" in existing_data
                 ):
                     print("Citations data is already up-to-date. Skipping fetch.")
                     return
@@ -67,6 +68,7 @@ def get_scholar_citations() -> None:
     citation_data = {
         "metadata": {"last_updated": today},
         "citations_by_year": {},
+        "h_index": 0,
         "papers": {},
     }
 
@@ -90,6 +92,25 @@ def get_scholar_citations() -> None:
     if "publications" not in author_data:
         print(f"No publications found in author data for user ID '{SCHOLAR_USER_ID}'.")
         sys.exit(1)
+
+    scholar_h_index = author_data.get("hindex")
+    if scholar_h_index is not None:
+        citation_data["h_index"] = int(scholar_h_index)
+    elif existing_data and "h_index" in existing_data:
+        print("Warning: Google Scholar returned no h-index. Keeping the existing value.")
+        citation_data["h_index"] = existing_data["h_index"]
+    else:
+        citation_counts = sorted(
+            (
+                int(publication.get("num_citations", 0) or 0)
+                for publication in author_data["publications"]
+            ),
+            reverse=True,
+        )
+        citation_data["h_index"] = sum(
+            count >= position
+            for position, count in enumerate(citation_counts, start=1)
+        )
 
     citation_history = author_data.get("cites_per_year", {})
     if citation_history:
@@ -131,6 +152,7 @@ def get_scholar_citations() -> None:
         and existing_data.get("papers") == citation_data["papers"]
         and existing_data.get("citations_by_year")
         == citation_data["citations_by_year"]
+        and existing_data.get("h_index") == citation_data["h_index"]
     ):
         print("No changes in citation data. Skipping file update.")
         return

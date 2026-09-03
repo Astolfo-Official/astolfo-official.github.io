@@ -599,10 +599,9 @@ _styles: |
           </dd>
         </div>
         <div class="publication-stat">
-          <dt>Citations by year</dt>
+          <dt>h-index</dt>
           <dd>
-            <span id="publication-latest-year-citations">0</span>
-            <small id="publication-latest-citation-year">latest year</small>
+            <span>{{ site.data.citations.h_index | default: 0 }}</span>
           </dd>
         </div>
       </dl>
@@ -742,12 +741,6 @@ _styles: |
       citationChart?.style.setProperty("--publication-year-count", citationSummaries.length);
 
       citationChart?.replaceChildren(...citationSummaries.map((summary) => createYearBar(summary, maximumCitations)));
-
-      const latestYear = citationSummaries[citationSummaries.length - 1];
-      const latestCitationCount = document.getElementById("publication-latest-year-citations");
-      const latestCitationYear = document.getElementById("publication-latest-citation-year");
-      if (latestCitationCount) latestCitationCount.textContent = latestYear.citations;
-      if (latestCitationYear) latestCitationYear.textContent = `in ${latestYear.year}`;
     };
 
     const bindPublicationYearInteractions = () => {

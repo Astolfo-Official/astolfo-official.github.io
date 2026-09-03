@@ -211,6 +211,7 @@ _styles: |
   .home-join h2::before,
   .home-stream-card h2::before {
     content: "";
+    flex: 0 0 0.58rem;
     width: 0.58rem;
     height: 0.58rem;
     border-radius: 999px;
