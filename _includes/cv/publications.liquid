@@ -1,72 +1,36 @@
 {% comment %}
-  Unified publications entry renderer for both formats
+  CV publications are generated from _bibliography/papers.bib through Jekyll Scholar.
 {% endcomment %}
 
-<ul class="font-weight-light list-group list-group-flush">
-  {% assign years = entries | map: 'releaseDate' | uniq | sort | reverse %}
-  {% assign publication_count = entries | size %}
-  {% assign publication_index = publication_count | plus: 1 %}
-  {% for year in years %}
-    {% assign year_entries = entries | where: 'releaseDate', year %}
-    {% for entry in year_entries %}
-      {% assign publication_index = publication_index | minus: 1 %}
-      <li class="list-group-item">
-        <div class="cv-publication-row">
-          {% assign authors_text = entry.authors | default: entry.author %}
-          {% if authors_text and cv and cv.name %}
-            {% assign cv_name_parts = cv.name | split: ' ' %}
-            {% assign cv_first_name = cv_name_parts | first %}
-            {% assign cv_last_name = cv_name_parts | last %}
-            {% capture cv_reverse_name %}{{ cv_last_name }}, {{ cv_first_name }}{% endcapture %}
-            {% capture highlighted_cv_name %}<u>{{ cv.name }}</u>{% endcapture %}
-            {% capture highlighted_cv_reverse_name %}<u>{{ cv_reverse_name }}</u>{% endcapture %}
-          {% endif %}
+<div id="cv-publications-from-bib" class="cv-bibliography">
+  {% bibliography --file papers --template cv_bib %}
+</div>
 
-          <div class="cv-publication-number-column">
-            <span class="cv-publication-number">{{ publication_index }}</span>
-          </div>
-          <div class="cv-publication-copy">
-            {% if entry.url %}
-              <h6 class="title font-weight-bold ml-1 ml-md-4">
-                <a href="{{ entry.url }}">{{ entry.title | default: entry.name }}</a>
-              </h6>
-            {% elsif entry.title %}
-              <h6 class="title font-weight-bold ml-1 ml-md-4">{{ entry.title }}</h6>
-            {% endif %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const publicationList = document.getElementById('cv-publications-from-bib');
+    if (!publicationList) return;
 
-            {% if authors_text %}
-              <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem; color: var(--global-text-color-light)">
-                {%- assign author_names = authors_text | split: ' and ' -%}
-                {%- for author_name in author_names -%}
-                  {%- assign highlighted_author = author_name -%}
-                  {%- if cv and cv.name -%}
-                    {%- assign highlighted_author = highlighted_author | replace: cv.name, highlighted_cv_name -%}
-                    {%- assign highlighted_author = highlighted_author | replace: cv_reverse_name, highlighted_cv_reverse_name -%}
-                  {%- endif -%}
-                  {{- highlighted_author -}}
-                  {%- unless forloop.last -%}
-                    {%- if forloop.rindex == 2 -%}
-                      {{- ' and ' -}}
-                    {%- else -%}
-                      {{- ', ' -}}
-                    {%- endif -%}
-                  {%- endunless -%}
-                {%- endfor -%}
-              </h6>
-            {% endif %}
+    const publicationNumbers = Array.from(publicationList.querySelectorAll('.cv-publication-number'));
+    publicationNumbers.forEach((numberElement, index) => {
+      numberElement.textContent = publicationNumbers.length - index;
+    });
 
-            {% if entry.citation %}
-              <div class="ml-1 ml-md-4" style="font-size: 0.95rem">
-                {{ entry.citation }}
-              </div>
-            {% endif %}
+    const toggleMiddleAuthors = (element) => {
+      const isExpanded = element.getAttribute('aria-expanded') === 'true';
+      element.innerHTML = isExpanded ? element.dataset.collapsedLabel : element.dataset.expandedAuthors;
+      element.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+      element.title = isExpanded ? `click to view ${element.dataset.collapsedLabel}` : 'click to hide middle authors';
+    };
 
-            {% if entry.summary %}
-              <p class="ml-1 ml-md-4">{{ entry.summary | markdownify | remove: '<p>' | remove: '</p>' }}</p>
-            {% endif %}
-          </div>
-        </div>
-      </li>
-    {% endfor %}
-  {% endfor %}
-</ul>
+    publicationList.querySelectorAll('.more-authors').forEach((element) => {
+      element.addEventListener('click', () => toggleMiddleAuthors(element));
+      element.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          toggleMiddleAuthors(element);
+        }
+      });
+    });
+  });
+</script>

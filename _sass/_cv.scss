@@ -558,6 +558,23 @@ ul.timeline li::before {
 
   .cv-publication-copy {
     min-width: 0;
+
+    .cv-publication-authors,
+    .cv-publication-citation {
+      color: var(--global-text-color-light);
+      font-size: 0.95rem;
+    }
+
+    span.more-authors {
+      color: var(--global-text-color-light);
+      border-bottom: 1px dashed var(--global-text-color-light);
+      cursor: pointer;
+
+      &:hover {
+        color: var(--global-text-color);
+        border-bottom-color: var(--global-text-color);
+      }
+    }
   }
 
   .cv-section-card > div > .card-text {
