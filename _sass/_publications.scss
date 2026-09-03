@@ -309,6 +309,8 @@
 }
 
 .related-publications {
+  --publication-teal: #2f6f73;
+  --publication-teal-soft: rgba(47, 111, 115, 0.09);
   margin-top: 2.6rem;
 
   .related-publications__heading {
@@ -364,18 +366,15 @@
     padding: clamp(1rem, 2.4vw, 1.25rem);
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(252, 126, 175, 0.1), transparent 44%),
-      var(--global-card-bg-color);
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+    background: var(--global-card-bg-color);
     transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
-      transform 0.2s ease;
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
 
     &:hover {
-      border-color: color-mix(in srgb, var(--global-theme-color) 38%, var(--global-divider-color));
-      box-shadow: 0 20px 42px rgba(15, 23, 42, 0.09);
+      border-color: color-mix(in srgb, var(--publication-teal) 42%, var(--global-divider-color));
+      box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.08);
       transform: translateY(-2px);
     }
   }
@@ -383,13 +382,14 @@
   ol.bibliography li {
     .title {
       margin-bottom: 0.35rem;
-      font-size: 1.08rem;
-      line-height: 1.4;
+      font-size: 1.02rem;
+      line-height: 1.35;
     }
 
     .author,
     .periodical {
       color: var(--global-text-color-light);
+      font-size: 0.88rem;
     }
 
     .abbr abbr {
@@ -398,8 +398,8 @@
 
     .abbr .preview-container {
       border: 1px solid var(--global-divider-color);
-      border-radius: 8px;
-      background: var(--global-bg-color);
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--publication-teal-soft), rgba(182, 74, 107, 0.04)), var(--global-bg-color);
     }
 
     .resource-links .resource-link,
@@ -417,6 +417,11 @@
       }
     }
   }
+}
+
+html[data-theme="dark"] .related-publications {
+  --publication-teal: #74c7c0;
+  --publication-teal-soft: rgba(116, 199, 192, 0.13);
 }
 
 .citation,

@@ -143,7 +143,7 @@ ul.task-list input[type="checkbox"] {
   }
 
   p:last-child {
-    max-width: 48rem;
+    max-width: none;
     margin: 0;
     color: var(--global-text-color-light);
     font-size: 1.04rem;
@@ -214,9 +214,8 @@ ul.task-list input[type="checkbox"] {
 
     img {
       border: 1px solid var(--global-divider-color);
-      border-radius: 8px !important;
+      border-radius: 6px !important;
       background: var(--global-bg-color);
-      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
     }
 
     .caption {
@@ -442,12 +441,13 @@ ul.task-list input[type="checkbox"] {
 
 .notes-stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(5.5rem, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+  width: 19rem;
   margin: 1.15rem 0 0;
 
   div {
-    padding: 0.85rem 1rem;
+    padding: 0.65rem 0.7rem;
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
     background: var(--global-card-bg-color);
@@ -455,15 +455,15 @@ ul.task-list input[type="checkbox"] {
 
   dt {
     color: var(--notes-accent);
-    font-size: 1.45rem;
+    font-size: 1.2rem;
     font-weight: 700;
     line-height: 1;
   }
 
   dd {
-    margin: 0.35rem 0 0;
+    margin: 0.3rem 0 0;
     color: var(--global-text-color-light);
-    font-size: 0.78rem;
+    font-size: 0.64rem;
     letter-spacing: 0;
     text-transform: uppercase;
   }
@@ -471,12 +471,13 @@ ul.task-list input[type="checkbox"] {
 
 .notes-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(18rem, 34rem);
-  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
   align-items: end;
 
   .notes-stats {
     margin: 0 0 0.2rem;
+    justify-self: end;
   }
 }
 
@@ -508,15 +509,22 @@ ul.task-list input[type="checkbox"] {
 
 .notes-list {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
+  align-items: stretch;
 }
 
 .note-card {
   display: grid;
-  grid-template-columns: 9.5rem minmax(0, 1fr);
-  gap: 1.2rem;
+  grid-template-columns: 6.1rem minmax(0, 1fr);
+  grid-template-rows: 8.65rem auto;
+  grid-template-areas:
+    "cover heading"
+    "summary summary";
+  gap: 0.9rem;
   min-height: 12rem;
-  padding: 1rem;
+  height: 100%;
+  padding: 0.9rem;
   border: 1px solid var(--global-divider-color);
   border-radius: 8px;
   background: var(--global-card-bg-color);
@@ -534,20 +542,20 @@ ul.task-list input[type="checkbox"] {
 
 .note-card-media {
   display: flex;
+  grid-area: cover;
+  width: 100%;
+  aspect-ratio: 1054 / 1490;
+  align-self: start;
   align-items: center;
   justify-content: center;
-  min-height: 10rem;
   overflow: hidden;
   border-radius: 6px;
-  background:
-    linear-gradient(135deg, rgba(47, 111, 115, 0.11), rgba(182, 74, 107, 0.08)),
-    var(--global-bg-color);
+  background: linear-gradient(135deg, rgba(47, 111, 115, 0.11), rgba(182, 74, 107, 0.08)), var(--global-bg-color);
 
   img {
     width: 100%;
     height: 100%;
-    max-height: 10rem;
-    object-fit: contain;
+    object-fit: cover;
   }
 }
 
@@ -558,13 +566,19 @@ ul.task-list input[type="checkbox"] {
 
 .note-card-body {
   display: flex;
+  grid-area: heading;
   min-width: 0;
   flex-direction: column;
 
   h3 {
-    margin: 0.35rem 0 0.5rem;
-    font-size: 1.25rem;
-    line-height: 1.25;
+    display: -webkit-box;
+    min-height: 2.6em;
+    margin: 0;
+    overflow: hidden;
+    font-size: 1.05rem;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 
     a {
       color: var(--global-text-color);
@@ -574,30 +588,35 @@ ul.task-list input[type="checkbox"] {
       }
     }
   }
+}
 
-  p {
-    margin-bottom: 1rem;
-    color: var(--global-text-color-light);
-    font-size: 0.95rem;
-    line-height: 1.65;
-  }
+.note-card-summary {
+  grid-area: summary;
+  margin: 0;
+  color: var(--global-text-color-light);
+  font-size: 0.82rem;
+  line-height: 1.55;
 }
 
 .note-card-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.3rem;
+  align-content: flex-start;
   align-items: center;
+  height: 3rem;
+  margin-bottom: 0.85rem;
+  overflow: hidden;
 
   span {
     display: inline-flex;
     align-items: center;
-    min-height: 1.45rem;
-    padding: 0.2rem 0.55rem;
+    min-height: 1.35rem;
+    padding: 0.18rem 0.42rem;
     border: 1px solid var(--global-divider-color);
     border-radius: 999px;
     color: var(--global-text-color-light);
-    font-size: 0.76rem;
+    font-size: 0.68rem;
     line-height: 1;
   }
 }
@@ -618,28 +637,6 @@ ul.task-list input[type="checkbox"] {
   background: rgba(47, 111, 115, 0.12);
 }
 
-.note-card-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.9rem;
-  align-items: center;
-  margin-top: auto;
-  font-size: 0.88rem;
-  font-weight: 600;
-}
-
-.note-read-link {
-  color: var(--global-theme-color);
-}
-
-.note-repo-link {
-  color: var(--global-text-color-light);
-
-  &:hover {
-    color: var(--notes-rose);
-  }
-}
-
 html[data-theme="dark"] {
   .notes-shelf,
   .note-detail {
@@ -651,6 +648,18 @@ html[data-theme="dark"] {
 
   .note-card:hover {
     box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.28);
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .notes-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .note-card {
+    grid-template-columns: 7.1rem minmax(0, 1fr);
+    grid-template-rows: 10.05rem auto;
+    gap: 1rem;
   }
 }
 
@@ -669,16 +678,13 @@ html[data-theme="dark"] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .note-card {
-    grid-template-columns: 7rem minmax(0, 1fr);
+  .notes-list {
+    grid-template-columns: 1fr;
   }
 
-  .note-card-media {
-    min-height: 8rem;
-
-    img {
-      max-height: 8rem;
-    }
+  .note-card {
+    grid-template-columns: 6.6rem minmax(0, 1fr);
+    grid-template-rows: 9.35rem auto;
   }
 }
 
@@ -689,14 +695,16 @@ html[data-theme="dark"] {
 
   .note-card {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "cover"
+      "heading"
+      "summary";
   }
 
   .note-card-media {
-    min-height: 11rem;
-
-    img {
-      max-height: 11rem;
-    }
+    width: 8rem;
+    justify-self: center;
   }
 }
 
@@ -741,9 +749,7 @@ html[data-theme="dark"] {
   overflow: hidden;
   border: 1px solid var(--global-divider-color);
   border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(47, 111, 115, 0.11), rgba(182, 74, 107, 0.08)),
-    var(--global-card-bg-color);
+  background: linear-gradient(135deg, rgba(47, 111, 115, 0.11), rgba(182, 74, 107, 0.08)), var(--global-card-bg-color);
 }
 
 .note-detail-cover {

@@ -28,7 +28,7 @@ _styles: |
   .home-page {
     --home-accent: var(--global-theme-color);
     --home-accent-soft: rgba(252, 126, 175, 0.12);
-    margin-top: 0.25rem;
+    margin-top: 0;
   }
 
   .home-hero {
@@ -37,15 +37,13 @@ _styles: |
     display: flex;
     align-items: center;
     margin: 0 0 2.2rem;
-    padding: clamp(2rem, 6vw, 4.5rem);
+    padding: 0;
     overflow: hidden;
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
     background:
-      linear-gradient(90deg, rgba(17, 25, 29, 0.84), rgba(17, 25, 29, 0.55) 42%, rgba(17, 25, 29, 0.12) 78%),
-      url("/assets/img/prof_pic.jpg") right center / min(46rem, 72vw) auto no-repeat,
-      linear-gradient(135deg, rgba(47, 111, 115, 0.28), rgba(252, 126, 175, 0.18)),
-      var(--global-card-bg-color);
+      radial-gradient(circle at 78% 45%, rgba(252, 126, 175, 0.16), transparent 48%),
+      linear-gradient(115deg, #11191d 0%, #253238 56%, #4a5054 100%);
     box-shadow: 0 24px 70px rgba(15, 23, 42, 0.14);
     isolation: isolate;
   }
@@ -53,17 +51,35 @@ _styles: |
   .home-hero::before {
     content: "";
     position: absolute;
+    inset: 0 0 0 32%;
+    z-index: 0;
+    background: url("/assets/img/prof_pic.jpg") center center / cover no-repeat;
+    opacity: 0.88;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.2) 16%, #000 42%, #000 88%, rgba(0, 0, 0, 0.76) 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.2) 16%, #000 42%, #000 88%, rgba(0, 0, 0, 0.76) 100%);
+    pointer-events: none;
+  }
+
+  .home-hero::after {
+    content: "";
+    position: absolute;
     inset: 0;
-    z-index: -1;
+    z-index: 1;
     background:
       linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
     background-size: 44px 44px;
-    mask-image: linear-gradient(90deg, black, transparent 78%);
+    -webkit-mask-image: linear-gradient(90deg, black, transparent 70%);
+    mask-image: linear-gradient(90deg, black, transparent 70%);
+    pointer-events: none;
   }
 
   .home-hero__content {
+    position: relative;
+    z-index: 2;
     width: min(100%, 46rem);
+    margin: 0;
+    padding: clamp(2rem, 6vw, 4.5rem) clamp(1.25rem, 3.5vw, 2.4rem);
     color: #fff;
   }
 
@@ -163,13 +179,6 @@ _styles: |
     font-weight: 700;
   }
 
-  .home-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
-    margin: 1.25rem 0 2.2rem;
-  }
-
   .home-join {
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
@@ -189,6 +198,14 @@ _styles: |
     font-size: clamp(1.2rem, 1.55vw, 1.55rem);
     font-weight: 750;
     line-height: 1.2;
+  }
+
+  .home-join h2 {
+    white-space: nowrap;
+  }
+
+  .home-join h2::after {
+    width: 1.5rem;
   }
 
   .home-join h2::before,
@@ -213,28 +230,26 @@ _styles: |
   .home-join p {
     margin: 0;
     color: var(--global-text-color-light);
-    font-size: 0.98rem;
+    font-size: 0.92rem;
     font-weight: 500;
-    line-height: 1.55;
-    white-space: nowrap;
+    line-height: 1.65;
   }
 
   .home-join {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(12rem, max-content);
-    gap: 1rem 1.5rem;
-    align-items: center;
-    padding: clamp(1rem, 2.4vw, 1.35rem);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .home-join-copy {
+    flex: 1;
     min-width: 0;
   }
 
   .home-join-actions {
     display: flex;
-    justify-content: center;
-    justify-self: end;
+    justify-content: flex-start;
+    margin-top: 1rem;
   }
 
   .home-join-actions a {
@@ -242,7 +257,8 @@ _styles: |
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    min-width: 11.5rem;
+    width: 100%;
+    min-width: 0;
     min-height: 2.8rem;
     padding: 0.7rem 1rem;
     border: 1px solid color-mix(in srgb, var(--global-theme-color) 48%, var(--global-divider-color));
@@ -267,9 +283,10 @@ _styles: |
 
   .home-feed-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 0.66fr) repeat(2, minmax(0, 1.17fr));
     gap: 1rem;
-    margin-top: 2.2rem;
+    width: 100%;
+    margin: 0 auto 2.2rem;
   }
 
   .home-feed-card {
@@ -388,7 +405,7 @@ _styles: |
   }
 
   .home-news-card .news th {
-    width: 10.2rem !important;
+    width: 8.35rem !important;
     color: #fc7eaf;
     font-size: 0.9rem;
     font-weight: 700;
@@ -397,7 +414,7 @@ _styles: |
   }
 
   .home-posts-card .news th {
-    width: 10.2rem !important;
+    width: 8.35rem !important;
     color: #fc7eaf;
     font-size: 0.9rem;
     font-weight: 700;
@@ -405,7 +422,11 @@ _styles: |
     text-transform: none;
   }
 
+  .home-news-card .news-title,
+  .home-news-card .news-inline-text,
   .home-posts-card .news-title {
+    display: block;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -435,42 +456,34 @@ _styles: |
     font-weight: 700;
     line-height: 1.42;
     text-decoration: none;
-    white-space: normal;
   }
 
   .home-stream-card .news-title:hover {
     color: var(--global-theme-color);
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1040px) {
     .home-hero {
       min-height: 34rem;
-      background:
-        linear-gradient(90deg, rgba(17, 25, 29, 0.9), rgba(17, 25, 29, 0.62)),
-        url("/assets/img/prof_pic.jpg") right center / auto 100% no-repeat,
-        var(--global-card-bg-color);
     }
 
-    .home-grid,
+    .home-hero::before {
+      left: 16%;
+      opacity: 0.72;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.2) 18%, #000 52%, rgba(0, 0, 0, 0.72) 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.2) 18%, #000 52%, rgba(0, 0, 0, 0.72) 100%);
+    }
+
     .home-feed-grid {
       grid-template-columns: 1fr;
     }
 
-    .home-join {
-      grid-template-columns: 1fr;
-    }
-
     .home-join-actions {
-      justify-self: start;
       width: 100%;
     }
 
     .home-join-actions a {
       width: min(100%, 16rem);
-    }
-
-    .home-join p {
-      white-space: normal;
     }
 
     .home-stream-card .news tr {
@@ -481,20 +494,27 @@ _styles: |
   }
 
   @media (max-width: 560px) {
-    .home-hero,
     .home-join,
     .home-feed-card {
-      width: min(100%, calc(100vw - 1.5rem));
-      max-width: calc(100vw - 1.5rem);
+      width: 100%;
+      max-width: 100%;
     }
 
     .home-hero {
       min-height: 32rem;
+      padding: 0;
+    }
+
+    .home-hero::before {
+      inset: 20% 0 0;
+      background-position: center 30%;
+      opacity: 0.56;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.28) 22%, #000 66%, rgba(0, 0, 0, 0.72) 100%);
+      mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.28) 22%, #000 66%, rgba(0, 0, 0, 0.72) 100%);
+    }
+
+    .home-hero__content {
       padding: 1.25rem;
-      background:
-        linear-gradient(180deg, rgba(17, 25, 29, 0.92), rgba(17, 25, 29, 0.64)),
-        url("/assets/img/prof_pic.jpg") center bottom / auto 72% no-repeat,
-        var(--global-card-bg-color);
     }
 
     .home-subtitle {
@@ -530,10 +550,10 @@ _styles: |
     </div>
   </section>
 
-  <div class="home-grid">
-    <aside class="home-join">
+  <div class="home-feed-grid">
+    <aside class="home-feed-card home-stream-card home-join">
       <div class="home-join-copy">
-        <h2>Join TEL Research Group</h2>
+        <h2>Join TEL Group</h2>
         <p>
           For collaborations and opportunities to join the TEL Group, please visit our group website.
         </p>
@@ -542,9 +562,7 @@ _styles: |
         <a href="https://www.taoeli.org" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Visit Group Website</a>
       </div>
     </aside>
-  </div>
 
-  <div class="home-feed-grid">
     {% if page.announcements and page.announcements.enabled %}
       <section class="home-feed-card home-stream-card home-news-card">
         <h2><a href="{{ '/news/' | relative_url }}" style="color: inherit">News</a></h2>
@@ -558,5 +576,6 @@ _styles: |
         {% include latest_posts.liquid %}
       </section>
     {% endif %}
+
   </div>
 </div>

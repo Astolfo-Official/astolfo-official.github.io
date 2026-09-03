@@ -40,6 +40,7 @@ def get_scholar_citations() -> None:
     """Fetch and update Google Scholar citation data."""
     print(f"Fetching citations for Google Scholar ID: {SCHOLAR_USER_ID}")
     today = datetime.now().strftime("%Y-%m-%d")
+    existing_data = {}
 
     # Check if the output file was already updated today
     if os.path.exists(OUTPUT_FILE):
@@ -52,7 +53,10 @@ def get_scholar_citations() -> None:
                 and "last_updated" in existing_data["metadata"]
             ):
                 print(f"Last updated on: {existing_data['metadata']['last_updated']}")
-                if existing_data["metadata"]["last_updated"] == today:
+                if (
+                    existing_data["metadata"]["last_updated"] == today
+                    and existing_data.get("citations_by_year")
+                ):
                     print("Citations data is already up-to-date. Skipping fetch.")
                     return
         except Exception as e:
@@ -60,7 +64,11 @@ def get_scholar_citations() -> None:
                 f"Warning: Could not read existing citation data from {OUTPUT_FILE}: {e}. The file may be missing or corrupted."
             )
 
-    citation_data = {"metadata": {"last_updated": today}, "papers": {}}
+    citation_data = {
+        "metadata": {"last_updated": today},
+        "citations_by_year": {},
+        "papers": {},
+    }
 
     scholarly.set_timeout(15)
     scholarly.set_retries(3)
@@ -82,6 +90,15 @@ def get_scholar_citations() -> None:
     if "publications" not in author_data:
         print(f"No publications found in author data for user ID '{SCHOLAR_USER_ID}'.")
         sys.exit(1)
+
+    citation_history = author_data.get("cites_per_year", {})
+    if citation_history:
+        citation_data["citations_by_year"] = {
+            str(year): int(count) for year, count in citation_history.items()
+        }
+    elif existing_data and existing_data.get("citations_by_year"):
+        print("Warning: Google Scholar returned no annual citation history. Keeping the existing history.")
+        citation_data["citations_by_year"] = existing_data["citations_by_year"]
 
     for pub in author_data["publications"]:
         try:
@@ -109,7 +126,12 @@ def get_scholar_citations() -> None:
             )
 
     # Compare new data with existing data
-    if existing_data and existing_data.get("papers") == citation_data["papers"]:
+    if (
+        existing_data
+        and existing_data.get("papers") == citation_data["papers"]
+        and existing_data.get("citations_by_year")
+        == citation_data["citations_by_year"]
+    ):
         print("No changes in citation data. Skipping file update.")
         return
 

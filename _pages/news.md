@@ -11,6 +11,7 @@ _styles: |
   }
 
   .news-page {
+    --news-accent: #2f6f73;
     margin-top: 0;
   }
 
@@ -23,14 +24,14 @@ _styles: |
   }
 
   .news-search-input {
-    width: min(100%, 22rem);
-    min-height: 2.75rem;
-    padding: 0.72rem 0.95rem;
+    width: min(100%, 19rem);
+    min-height: 2.5rem;
+    padding: 0.62rem 0.8rem;
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
     background: var(--global-card-bg-color);
     color: var(--global-text-color);
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+    font-size: 0.9rem;
   }
 
   .news-search-input:focus {
@@ -60,7 +61,7 @@ _styles: |
 
   .news-page .news tbody {
     display: grid;
-    gap: 0.65rem;
+    gap: 0.75rem;
   }
 
   .news-page .news tr {
@@ -68,23 +69,20 @@ _styles: |
     grid-template-columns: 10.5rem minmax(0, 1fr);
     gap: 0.75rem;
     align-items: center;
-    min-height: 3.25rem;
-    padding: 0.68rem 0.9rem;
+    min-height: 3.15rem;
+    padding: 0.65rem 0.85rem;
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(252, 126, 175, 0.08), transparent 46%),
-      var(--global-card-bg-color);
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+    background: var(--global-card-bg-color);
     transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
-      transform 0.2s ease;
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
   }
 
   .news-page .news tr:hover {
-    border-color: color-mix(in srgb, var(--global-theme-color) 34%, var(--global-divider-color));
-    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.08);
+    border-color: color-mix(in srgb, var(--news-accent) 42%, var(--global-divider-color));
+    box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
   }
 
@@ -95,8 +93,8 @@ _styles: |
     padding: 0;
     border: 0;
     color: var(--global-text-color);
-    font-size: 0.98rem;
-    line-height: 1.45;
+    font-size: 0.92rem;
+    line-height: 1.5;
   }
 
   .news-page .news th {
@@ -109,21 +107,21 @@ _styles: |
 
   .news-page .news-number {
     display: inline-flex;
-    min-width: 2rem;
-    min-height: 2rem;
+    min-width: 1.8rem;
+    min-height: 1.8rem;
     align-items: center;
     justify-content: center;
     border: 1px solid color-mix(in srgb, var(--global-theme-color) 36%, var(--global-divider-color));
     border-radius: 999px;
-    color: var(--global-theme-color);
-    font-size: 0.8rem;
+    color: var(--news-accent);
+    font-size: 0.74rem;
     font-weight: 800;
     letter-spacing: 0;
   }
 
   .news-page .news-date {
-    color: var(--global-theme-color);
-    font-size: 0.78rem;
+    color: var(--news-accent);
+    font-size: 0.74rem;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -131,7 +129,7 @@ _styles: |
 
   .news-page .news-title {
     color: var(--global-text-color);
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 700;
     line-height: 1.4;
     text-decoration: none;
@@ -149,6 +147,10 @@ _styles: |
     display: none;
   }
 
+  html[data-theme="dark"] .news-page {
+    --news-accent: #74c7c0;
+  }
+
   @media (max-width: 640px) {
     .news-page .news tr {
       grid-template-columns: 1fr;
@@ -161,7 +163,7 @@ _styles: |
 <div class="news-page">
   <header class="page-hero">
     <h1>{{ page.title }}</h1>
-    <p>{{ page.description }}</p>
+    <p>Research milestones, software releases, publications, and occasional notes from life outside the lab.</p>
   </header>
 
   <div class="news-tools">
@@ -169,7 +171,8 @@ _styles: |
     <p id="news-search-empty" class="news-search-empty">No matching news.</p>
   </div>
 
-  {% include news.liquid %}
+{% include news.liquid %}
+
 </div>
 
 <script>

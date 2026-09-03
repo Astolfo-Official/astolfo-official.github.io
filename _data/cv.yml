@@ -2,7 +2,7 @@ cv:
   name: Xinwei Ji
   label: Graduate Student
   email: astolfo@udel.edu
-  location: Newark, DE
+#  location: Newark, DE
   image: "prof_pic.jpg"
   summary: |
     Xinwei Ji (纪鑫炜) is a second-year Ph.D. student in the Department of
@@ -20,16 +20,19 @@ cv:
     happy to discuss research ideas and potential collaboration opportunities;
     prospective group members can also visit the
     [TEL Research Group website](https://www.taoeli.org).
+
+    Outside the lab, he enjoys running and aims to maintain a semi-professional
+    level of training.
   research_tags:
     - polaritonics.md
     - MD_simulations.yml
     - scientific_agents.ai
 
-  address:
-    lines:
-      - Department of Physics and Astronomy
-      - University of Delaware
-      - Newark, DE 19716
+#  address:
+#    lines:
+#      - Department of Physics and Astronomy
+#      - University of Delaware
+#      - Newark, DE 19716
 
   sections:
     Education:

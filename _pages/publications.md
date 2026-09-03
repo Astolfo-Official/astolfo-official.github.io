@@ -16,29 +16,55 @@ _styles: |
   }
 
   .publications-page {
+    --publication-accent-soft: rgba(252, 126, 175, 0.1);
+    --publication-teal: #2f6f73;
+    --publication-teal-soft: rgba(47, 111, 115, 0.09);
     margin-top: 0;
   }
 
-  .publication-tools {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    align-items: center;
-    margin: 1.15rem 0 2rem;
+  .publication-page-hero {
+    margin-bottom: 1.35rem;
   }
 
-  .publication-tools .bibsearch-form-input {
-    width: min(100%, 22rem);
-    min-height: 2.75rem;
-    padding: 0.72rem 0.95rem;
+  .publication-workbench {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(18.5rem, 20rem);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .publication-list-panel,
+  .publication-insights {
+    min-width: 0;
+  }
+
+  .publication-insights {
+    border: 1px solid var(--global-divider-color);
+    border-radius: 8px;
+    background: var(--global-card-bg-color);
+  }
+
+  .publication-list-panel {
+    padding: 0;
+  }
+
+  .publication-insights__search {
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+
+  .publication-insights__search .bibsearch-form-input {
+    width: 100%;
+    min-height: 2.3rem;
+    padding: 0.55rem 0.7rem;
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
     background: var(--global-card-bg-color);
     color: var(--global-text-color);
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+    font-size: 0.78rem;
   }
 
-  .publication-tools .bibsearch-form-input:focus {
+  .publication-insights__search .bibsearch-form-input:focus {
     border-color: var(--global-theme-color);
     outline: 0;
     box-shadow: 0 0 0 0.18rem rgba(252, 126, 175, 0.14);
@@ -46,24 +72,34 @@ _styles: |
 
   .publication-filter-list {
     display: flex;
-    flex: 1 1 auto;
-    flex-wrap: wrap;
-    gap: 0.45rem;
+    flex-wrap: nowrap;
+    gap: 0.28rem;
     margin: 0;
     padding: 0;
+    overflow-x: auto;
     list-style: none;
+    scrollbar-width: none;
+  }
+
+  .publication-filter-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .publication-filter-list > li {
+    flex: 0 0 auto;
   }
 
   .publication-filter {
-    min-height: 2.35rem;
-    padding: 0.45rem 0.8rem;
+    min-height: 1.8rem;
+    padding: 0.28rem 0.42rem;
     border: 1px solid var(--global-divider-color);
     border-radius: 999px;
     background: transparent;
     color: var(--global-text-color);
     font: inherit;
-    font-size: 0.9rem;
+    font-size: 0.64rem;
     font-weight: 600;
+    white-space: nowrap;
     cursor: pointer;
     transition:
       border-color 0.2s ease,
@@ -78,7 +114,7 @@ _styles: |
     color: var(--global-hover-text-color);
   }
 
-  .research-area-filtered {
+  .publication-sidebar-filtered {
     display: none !important;
   }
 
@@ -90,7 +126,7 @@ _styles: |
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin: 2.6rem 0 1.1rem;
+    margin: 2rem 0 0.85rem;
     padding-top: 0;
     border-top: 0;
     color: var(--global-text-color);
@@ -98,6 +134,10 @@ _styles: |
     font-weight: 700;
     line-height: 1.14;
     letter-spacing: 0;
+  }
+
+  .publications-page .publications h2.bibliography:first-child {
+    margin-top: 0;
   }
 
   .publications-page .publications h2.bibliography::after {
@@ -109,39 +149,37 @@ _styles: |
 
   .publications-page .publications ol.bibliography {
     display: grid;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .publications-page .publications ol.bibliography > li {
     margin-bottom: 0;
-    padding: clamp(1rem, 2.4vw, 1.25rem);
+    padding: clamp(0.9rem, 2vw, 1.05rem);
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(252, 126, 175, 0.1), transparent 44%),
-      var(--global-card-bg-color);
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+    background: var(--global-card-bg-color);
     transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
-      transform 0.2s ease;
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
   }
 
   .publications-page .publications ol.bibliography > li:hover {
-    border-color: color-mix(in srgb, var(--global-theme-color) 38%, var(--global-divider-color));
-    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.09);
+    border-color: color-mix(in srgb, var(--publication-teal) 42%, var(--global-divider-color));
+    box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
   }
 
   .publications-page .publications ol.bibliography li .title {
     margin-bottom: 0.35rem;
-    font-size: 1.08rem;
-    line-height: 1.4;
+    font-size: 1.02rem;
+    line-height: 1.35;
   }
 
   .publications-page .publications ol.bibliography li .author,
   .publications-page .publications ol.bibliography li .periodical {
     color: var(--global-text-color-light);
+    font-size: 0.88rem;
   }
 
   .publications-page .publications ol.bibliography li .abbr abbr {
@@ -150,14 +188,16 @@ _styles: |
 
   .publications-page .publications ol.bibliography li .abbr .preview-container {
     border: 1px solid var(--global-divider-color);
-    border-radius: 8px;
-    background: var(--global-bg-color);
+    border-radius: 6px;
+    background:
+      linear-gradient(135deg, var(--publication-teal-soft), rgba(182, 74, 107, 0.04)),
+      var(--global-bg-color);
   }
 
   .publications-page .publications ol.bibliography li .resource-links .resource-link,
   .publications-page .publications ol.bibliography li .links a.btn {
     border-color: var(--global-divider-color);
-    border-radius: 999px;
+    border-radius: 6px;
     background: transparent;
     color: var(--global-text-color);
     font-weight: 600;
@@ -170,19 +210,284 @@ _styles: |
     color: var(--global-hover-text-color);
   }
 
+  .publication-insights {
+    position: sticky;
+    top: 5rem;
+    overflow: hidden;
+  }
+
+  .publication-insights__header {
+    padding: 1.15rem 1.1rem 1rem;
+    border-bottom: 1px solid var(--global-divider-color);
+    background: var(--global-card-bg-color);
+  }
+
+  .publication-insights__kicker,
+  .publication-insights__section-title,
+  .publication-year-label {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .publication-insights__kicker {
+    margin: 0 0 0.35rem;
+    color: var(--global-theme-color);
+  }
+
+  .publication-insights__header h2 {
+    margin: 0;
+    color: var(--global-text-color);
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.18;
+  }
+
+  .publication-insights__updated {
+    margin: 0.55rem 0 0;
+    color: var(--global-text-color-light);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .publication-insights__filters {
+    display: grid;
+    gap: 0.85rem;
+    padding: 0.95rem 1.1rem 1rem;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+
+  .publication-filter-group {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .publication-filter-group legend {
+    width: auto;
+    margin: 0 0 0.45rem;
+    color: var(--global-text-color-light);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .publication-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+  }
+
+  .publication-stat {
+    min-width: 0;
+    padding: 0.9rem 1rem;
+    border-right: 1px solid var(--global-divider-color);
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+
+  .publication-stat:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .publication-stat dt {
+    margin-bottom: 0.35rem;
+    color: var(--global-text-color-light);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .publication-stat dd {
+    display: flex;
+    gap: 0.35rem;
+    align-items: baseline;
+    margin: 0;
+    color: var(--global-text-color);
+    font-size: 1.35rem;
+    font-weight: 750;
+    line-height: 1;
+  }
+
+  .publication-stat small {
+    color: var(--global-text-color-light);
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .publication-insights__section {
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+
+  .publication-insights__section-title {
+    margin: 0 0 0.75rem;
+    color: var(--global-theme-color);
+  }
+
+  .publication-insights__section-heading {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .publication-insights__section-heading .publication-insights__section-title {
+    margin: 0;
+  }
+
+  .publication-chart-context {
+    color: var(--global-text-color-light);
+    font-size: 0.68rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .publication-year-chart {
+    display: grid;
+    grid-template-columns: repeat(var(--publication-year-count, 1), minmax(2.5rem, 1fr));
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0.7rem 0.45rem 0.55rem;
+    overflow-x: auto;
+    border: 1px solid var(--global-divider-color);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--publication-teal-soft) 58%, var(--global-card-bg-color));
+    list-style: none;
+  }
+
+  .publication-year-chart > li {
+    min-width: 0;
+  }
+
+  .publication-year-bar {
+    display: grid;
+    grid-template-rows: auto 5.25rem auto;
+    gap: 0.35rem;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition:
+      opacity 180ms ease,
+      filter 180ms ease;
+  }
+
+  .publication-year-value {
+    display: block;
+    min-width: 0;
+    padding: 0.15rem 0.2rem;
+    overflow: hidden;
+    border: 1px solid var(--global-divider-color);
+    border-radius: 999px;
+    color: var(--global-text-color);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.68rem;
+    font-weight: 750;
+    line-height: 1.1;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .publication-year-track {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .publication-year-fill {
+    width: clamp(0.72rem, 48%, 1.35rem);
+    height: max(0.24rem, var(--publication-bar-ratio, 0%));
+    border-radius: 999px 999px 0.25rem 0.25rem;
+    background: linear-gradient(180deg, var(--global-theme-color), var(--publication-teal));
+    box-shadow: 0 5px 14px rgba(47, 111, 115, 0.16);
+    transition:
+      height 240ms ease,
+      opacity 180ms ease;
+  }
+
+  .publication-year-bar:hover .publication-year-value,
+  .publication-year-bar:focus-visible .publication-year-value,
+  .publication-year-bar.is-year-active .publication-year-value {
+    border-color: var(--global-theme-color);
+    color: var(--global-theme-color);
+  }
+
+  .publication-year-label {
+    color: var(--global-theme-color);
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  .publication-year-bar:focus-visible {
+    border-radius: 6px;
+    outline: 2px solid color-mix(in srgb, var(--global-theme-color) 54%, transparent);
+    outline-offset: 3px;
+  }
+
+  .publication-year-bar.is-year-muted,
+  .publications-page .publications h2.bibliography.is-year-muted,
+  .publications-page .publications ol.bibliography > li.is-year-muted {
+    opacity: 0.24;
+    filter: grayscale(0.55) saturate(0.35);
+  }
+
+  .publications-page .publications h2.bibliography,
+  .publications-page .publications ol.bibliography > li {
+    transition:
+      opacity 180ms ease,
+      filter 180ms ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  html[data-theme="dark"] .publications-page {
+    --publication-teal: #74c7c0;
+    --publication-teal-soft: rgba(116, 199, 192, 0.13);
+  }
+
+  @media (max-width: 960px) {
+    .publication-workbench {
+      grid-template-columns: 1fr;
+    }
+
+    .publication-insights {
+      position: static;
+      grid-row: 1;
+    }
+  }
+
   @media (max-width: 767.98px) {
     .publications-page {
       margin-top: 0;
     }
 
-    .publication-tools {
-      width: 100%;
-      align-items: stretch;
-      flex-direction: column;
-    }
-
     .publications-page .publications ol.bibliography > li {
       padding: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .publication-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .publication-stat,
+    .publication-stat:nth-child(2n) {
+      border-right: 0;
     }
   }
 ---
@@ -190,33 +495,262 @@ _styles: |
 <!-- _pages/publications.md -->
 
 <div class="publications-page">
-  <header class="page-hero">
+  <header class="page-hero publication-page-hero">
     <h1>{{ page.title }}</h1>
-    <p>{{ page.description }}</p>
+    <p>Articles and preprints across polaritonics, electronic-structure theory, and autonomous scientific simulation.</p>
   </header>
 
-  <div class="publication-tools">
-    {% include bib_search.liquid %}
-    <ul class="publication-filter-list" aria-label="Research direction filters">
-      <li><button class="publication-filter is-active" type="button" data-area="all">All</button></li>
-      <li><button class="publication-filter" type="button" data-area="photonics">Polaritonics</button></li>
-      <li><button class="publication-filter" type="button" data-area="ai-agents">AI Agents</button></li>
-      <li><button class="publication-filter" type="button" data-area="electronic structure">Electronic Structure</button></li>
-    </ul>
-  </div>
+{% assign publication_records = site.data.cv.cv.sections.Publications %}
+{% assign publication_total = publication_records | size %}
+{% assign first_author_total = 0 %}
+{% assign first_author_citation_total = 0 %}
+{% for publication in publication_records %}
+{% assign publication_first_author = publication.authors | split: ' and ' | first | strip %}
+{% if publication_first_author == 'Ji, Xinwei' %}
+{% assign first_author_total = first_author_total | plus: 1 %}
+{% assign publication_title_key = publication.title | downcase | remove: ' ' | remove: '-' | remove: '–' | remove: '—' | remove: ':' %}
+{% for paper in site.data.citations.papers %}
+{% assign citation_title_key = paper[1].title | downcase | remove: ' ' | remove: '-' | remove: '–' | remove: '—' | remove: ':' %}
+{% if publication_title_key == citation_title_key %}
+{% assign first_author_citation_total = first_author_citation_total | plus: paper[1].citations %}
+{% break %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
 
-  <div class="publications">
-    {% bibliography %}
+{% assign citation_total = 0 %}
+{% for paper in site.data.citations.papers %}
+{% assign citation_total = citation_total | plus: paper[1].citations %}
+{% endfor %}
+
+  <div class="publication-workbench">
+    <section class="publication-list-panel" aria-label="Publication list">
+      <div class="publications">
+        {% bibliography %}
+      </div>
+    </section>
+
+    <aside class="publication-insights" aria-labelledby="publication-insights-title">
+      <header class="publication-insights__header">
+        <p class="publication-insights__kicker">Google Scholar</p>
+        <h2 id="publication-insights-title">Publication snapshot</h2>
+        {% if site.data.citations.metadata.last_updated %}
+          <p class="publication-insights__updated">Citation data updated {{ site.data.citations.metadata.last_updated | date: '%b %-d, %Y' }}.</p>
+        {% endif %}
+      </header>
+
+      <div class="publication-insights__search">
+        {% include bib_search.liquid %}
+      </div>
+
+      <div class="publication-insights__filters" aria-label="Publication filters">
+        <fieldset class="publication-filter-group">
+          <legend>Authorship</legend>
+          <ul class="publication-filter-list">
+            <li><button class="publication-filter is-active" type="button" data-authorship="all" aria-pressed="true">All</button></li>
+            <li><button class="publication-filter" type="button" data-authorship="first-author" aria-pressed="false">First author</button></li>
+            <li><button class="publication-filter" type="button" data-authorship="coauthor" aria-pressed="false">Coauthor</button></li>
+          </ul>
+        </fieldset>
+        <fieldset class="publication-filter-group">
+          <legend>Research direction</legend>
+          <ul class="publication-filter-list">
+            <li><button class="publication-filter is-active" type="button" data-area="all" aria-pressed="true">All</button></li>
+            <li><button class="publication-filter" type="button" data-area="photonics" aria-pressed="false">Polaritonics</button></li>
+            <li><button class="publication-filter" type="button" data-area="electronic structure" aria-pressed="false">Electronic structure</button></li>
+            <li><button class="publication-filter" type="button" data-area="ai-agents" aria-pressed="false">AI agents</button></li>
+          </ul>
+        </fieldset>
+      </div>
+
+      <dl class="publication-stats">
+        <div class="publication-stat">
+          <dt>Showing</dt>
+          <dd aria-live="polite">
+            <span id="publication-visible-count">{{ publication_total }}</span>
+            <small>of {{ publication_total }}</small>
+          </dd>
+        </div>
+        <div class="publication-stat">
+          <dt>Citations</dt>
+          <dd aria-live="polite">
+            <span id="publication-visible-citations">{{ citation_total }}</span>
+            <small>of {{ citation_total }}</small>
+          </dd>
+        </div>
+        <div class="publication-stat">
+          <dt>First author</dt>
+          <dd>
+            <span id="publication-visible-first-author-count">{{ first_author_total }}</span>
+            <small><span id="publication-visible-first-author-citations">{{ first_author_citation_total }}</span> citations</small>
+          </dd>
+        </div>
+        <div class="publication-stat">
+          <dt>Citations by year</dt>
+          <dd>
+            <span id="publication-latest-year-citations">0</span>
+            <small id="publication-latest-citation-year">latest year</small>
+          </dd>
+        </div>
+      </dl>
+
+      <section class="publication-insights__section" aria-labelledby="publication-citation-years-title">
+        <div class="publication-insights__section-heading">
+          <h3 id="publication-citation-years-title" class="publication-insights__section-title">Citations by year</h3>
+          <span class="publication-chart-context">All papers</span>
+        </div>
+        <ol id="publication-citation-chart" class="publication-year-chart" data-metric="citations"></ol>
+      </section>
+
+    </aside>
+
   </div>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const filters = Array.from(document.querySelectorAll(".publication-filter"));
-    const entries = Array.from(document.querySelectorAll(".bibliography > li"));
-    if (filters.length === 0 || entries.length === 0) return;
+    const authorshipFilters = Array.from(document.querySelectorAll(".publication-filter[data-authorship]"));
+    const areaFilters = Array.from(document.querySelectorAll(".publication-filter[data-area]"));
+    const entries = Array.from(document.querySelectorAll(".publications-page .bibliography > li"));
+    const citationHistory = {{ site.data.citations.citations_by_year | jsonify }};
+    if (authorshipFilters.length === 0 || areaFilters.length === 0 || entries.length === 0) return;
 
+    let activeAuthorship = "all";
     let activeArea = "all";
+
+    const updateVisibleStats = () => {
+      const visibleEntries = entries.filter(
+        (entry) => !entry.classList.contains("unloaded") && !entry.classList.contains("publication-sidebar-filtered")
+      );
+      const countElement = document.getElementById("publication-visible-count");
+      const citationElement = document.getElementById("publication-visible-citations");
+      const firstAuthorCountElement = document.getElementById("publication-visible-first-author-count");
+      const firstAuthorCitationElement = document.getElementById("publication-visible-first-author-citations");
+      const visibleCitations = visibleEntries.reduce(
+        (total, entry) => total + (Number(entry.querySelector(".publication-entry-column")?.dataset.citations) || 0),
+        0
+      );
+      const visibleFirstAuthorEntries = visibleEntries.filter(
+        (entry) => entry.querySelector(".publication-entry-column")?.dataset.authorship === "first-author"
+      );
+      const visibleFirstAuthorCitations = visibleFirstAuthorEntries.reduce(
+        (total, entry) => total + (Number(entry.querySelector(".publication-entry-column")?.dataset.citations) || 0),
+        0
+      );
+
+      if (countElement) countElement.textContent = visibleEntries.length;
+      if (citationElement) citationElement.textContent = visibleCitations;
+      if (firstAuthorCountElement) firstAuthorCountElement.textContent = visibleFirstAuthorEntries.length;
+      if (firstAuthorCitationElement) firstAuthorCitationElement.textContent = visibleFirstAuthorCitations;
+    };
+
+    const setFocusedChartYear = (focusedYear) => {
+      const yearBars = Array.from(document.querySelectorAll(".publication-year-bar"));
+      const hasMatchingYear = yearBars.some((bar) => bar.dataset.year === focusedYear);
+      if (!hasMatchingYear) return;
+
+      yearBars.forEach((bar) => {
+        bar.classList.toggle("is-year-active", bar.dataset.year === focusedYear);
+        bar.classList.toggle("is-year-muted", bar.dataset.year !== focusedYear);
+      });
+    };
+
+    const clearFocusedChartYear = () => {
+      document.querySelectorAll(".publication-year-bar").forEach((bar) => {
+        bar.classList.remove("is-year-muted", "is-year-active");
+      });
+    };
+
+    const setFocusedPublicationYear = (focusedYear) => {
+      entries.forEach((entry) => {
+        const entryYear = entry.querySelector(".publication-entry-column")?.dataset.publicationYear || "";
+        entry.classList.toggle("is-year-muted", entryYear !== focusedYear);
+      });
+
+      document.querySelectorAll(".publications-page h2.bibliography").forEach((heading) => {
+        heading.classList.toggle("is-year-muted", heading.textContent.trim() !== focusedYear);
+      });
+
+      setFocusedChartYear(focusedYear);
+    };
+
+    const clearFocusedPublicationYear = () => {
+      entries.forEach((entry) => entry.classList.remove("is-year-muted"));
+      document.querySelectorAll(".publications-page h2.bibliography").forEach((heading) => {
+        heading.classList.remove("is-year-muted");
+      });
+      clearFocusedChartYear();
+    };
+
+    const createYearBar = (yearSummary, maximumValue) => {
+      const value = yearSummary.citations;
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      const valueLabel = document.createElement("span");
+      const track = document.createElement("span");
+      const fill = document.createElement("span");
+      const yearLabel = document.createElement("span");
+
+      button.type = "button";
+      button.className = "publication-year-bar";
+      button.dataset.year = yearSummary.year;
+      button.setAttribute("aria-label", `${yearSummary.year}: ${value} citations`);
+
+      valueLabel.className = "publication-year-value";
+      valueLabel.textContent = value;
+
+      track.className = "publication-year-track";
+      track.setAttribute("aria-hidden", "true");
+      fill.className = "publication-year-fill";
+      fill.style.setProperty("--publication-bar-ratio", `${maximumValue > 0 ? (value / maximumValue) * 100 : 0}%`);
+      track.append(fill);
+
+      yearLabel.className = "publication-year-label";
+      yearLabel.textContent = yearSummary.year;
+
+      button.append(valueLabel, track, yearLabel);
+      button.addEventListener("pointerenter", () => setFocusedPublicationYear(yearSummary.year));
+      button.addEventListener("pointerleave", clearFocusedPublicationYear);
+      button.addEventListener("focus", () => setFocusedPublicationYear(yearSummary.year));
+      button.addEventListener("blur", clearFocusedPublicationYear);
+      item.append(button);
+      return item;
+    };
+
+    const buildCitationChart = () => {
+      const citationSummaries = Object.entries(citationHistory || {})
+        .map(([year, citations]) => ({ year, citations: Number(citations) || 0 }))
+        .sort((left, right) => Number(left.year) - Number(right.year));
+      if (citationSummaries.length === 0) return;
+
+      const citationChart = document.getElementById("publication-citation-chart");
+      const maximumCitations = Math.max(...citationSummaries.map((summary) => summary.citations));
+
+      citationChart?.style.setProperty("--publication-year-count", citationSummaries.length);
+
+      citationChart?.replaceChildren(...citationSummaries.map((summary) => createYearBar(summary, maximumCitations)));
+
+      const latestYear = citationSummaries[citationSummaries.length - 1];
+      const latestCitationCount = document.getElementById("publication-latest-year-citations");
+      const latestCitationYear = document.getElementById("publication-latest-citation-year");
+      if (latestCitationCount) latestCitationCount.textContent = latestYear.citations;
+      if (latestCitationYear) latestCitationYear.textContent = `in ${latestYear.year}`;
+    };
+
+    const bindPublicationYearInteractions = () => {
+      entries.forEach((entry) => {
+        const publicationYear = entry.querySelector(".publication-entry-column")?.dataset.publicationYear || "";
+        if (!publicationYear) return;
+
+        entry.addEventListener("pointerenter", () => setFocusedChartYear(publicationYear));
+        entry.addEventListener("pointerleave", clearFocusedChartYear);
+        entry.addEventListener("focusin", () => setFocusedChartYear(publicationYear));
+        entry.addEventListener("focusout", (event) => {
+          if (!entry.contains(event.relatedTarget)) clearFocusedChartYear();
+        });
+      });
+    };
 
     const assignPublicationNumbers = () => {
       const publicationNumbers = entries.map((entry) => entry.querySelector(".publication-number")).filter(Boolean);
@@ -228,7 +762,7 @@ _styles: |
     };
 
     const updateBibliographyGroups = () => {
-      document.querySelectorAll("h2.bibliography").forEach((heading) => {
+      document.querySelectorAll(".publications-page h2.bibliography").forEach((heading) => {
         let iterator = heading.nextElementSibling;
         let hasVisibleEntry = false;
 
@@ -236,44 +770,66 @@ _styles: |
           if (iterator.tagName === "OL") {
             const listItems = Array.from(iterator.querySelectorAll(":scope > li"));
             const listHasVisibleEntry = listItems.some(
-              (item) => !item.classList.contains("unloaded") && !item.classList.contains("research-area-filtered")
+              (item) => !item.classList.contains("unloaded") && !item.classList.contains("publication-sidebar-filtered")
             );
 
-            iterator.classList.toggle("research-area-filtered", !listHasVisibleEntry);
+            iterator.classList.toggle("publication-sidebar-filtered", !listHasVisibleEntry);
             if (iterator.previousElementSibling && iterator.previousElementSibling.tagName !== "OL") {
-              iterator.previousElementSibling.classList.toggle("research-area-filtered", !listHasVisibleEntry);
+              iterator.previousElementSibling.classList.toggle("publication-sidebar-filtered", !listHasVisibleEntry);
             }
             hasVisibleEntry = hasVisibleEntry || listHasVisibleEntry;
           }
           iterator = iterator.nextElementSibling;
         }
 
-        heading.classList.toggle("research-area-filtered", !hasVisibleEntry);
+        heading.classList.toggle("publication-sidebar-filtered", !hasVisibleEntry);
       });
+      updateVisibleStats();
     };
 
-    const applyResearchAreaFilter = () => {
+    const applySidebarFilters = () => {
       entries.forEach((entry) => {
-        const entryArea = entry.querySelector(".publication-entry-column")?.dataset.researchArea || "";
+        const entryData = entry.querySelector(".publication-entry-column")?.dataset;
+        const entryArea = entryData?.researchArea || "";
+        const entryAuthorship = entryData?.authorship || "coauthor";
         const matchesArea = activeArea === "all" || entryArea === activeArea;
-        entry.classList.toggle("research-area-filtered", !matchesArea);
+        const matchesAuthorship = activeAuthorship === "all" || entryAuthorship === activeAuthorship;
+        entry.classList.toggle("publication-sidebar-filtered", !matchesArea || !matchesAuthorship);
       });
       updateBibliographyGroups();
     };
 
-    filters.forEach((button) => {
+    authorshipFilters.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeAuthorship = button.dataset.authorship;
+        authorshipFilters.forEach((filterButton) => {
+          const isActive = filterButton === button;
+          filterButton.classList.toggle("is-active", isActive);
+          filterButton.setAttribute("aria-pressed", String(isActive));
+        });
+        applySidebarFilters();
+      });
+    });
+
+    areaFilters.forEach((button) => {
       button.addEventListener("click", () => {
         activeArea = button.dataset.area;
-        filters.forEach((filterButton) => filterButton.classList.toggle("is-active", filterButton === button));
-        applyResearchAreaFilter();
+        areaFilters.forEach((filterButton) => {
+          const isActive = filterButton === button;
+          filterButton.classList.toggle("is-active", isActive);
+          filterButton.setAttribute("aria-pressed", String(isActive));
+        });
+        applySidebarFilters();
       });
     });
 
     document.getElementById("bibsearch")?.addEventListener("input", () => {
-      window.setTimeout(updateBibliographyGroups, 0);
+      window.setTimeout(updateBibliographyGroups, 20);
     });
 
     assignPublicationNumbers();
-    applyResearchAreaFilter();
+    buildCitationChart();
+    bindPublicationYearInteractions();
+    applySidebarFilters();
   });
 </script>

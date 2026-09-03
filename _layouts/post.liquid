@@ -32,55 +32,45 @@ layout: default
     {% endif %}
   </header>
 
-  <dl class="blog-post-facts" aria-label="Post metadata">
-    <div>
-      <dt>Published</dt>
-      <dd>{{ page.date | date: '%b %-d, %Y' }}</dd>
-    </div>
-    <div>
-      <dt>Reading Time</dt>
-      <dd>{{ read_time }} min</dd>
-    </div>
-    {% assign last_date = page.last_modified_at | default: page.last_updated %}
-    {% if last_date %}
+  {% unless url_beginning == '/blog/' %}
+    <dl class="blog-post-facts" aria-label="Post metadata">
       <div>
-        <dt>Updated</dt>
-        <dd>{{ last_date | date: '%b %-d, %Y' }}</dd>
+        <dt>Published</dt>
+        <dd>{{ page.date | date: '%b %-d, %Y' }}</dd>
       </div>
-    {% endif %}
-    {% if page.author %}
       <div>
-        <dt>Author</dt>
-        <dd>{{ page.author }}</dd>
+        <dt>Reading Time</dt>
+        <dd>{{ read_time }} min</dd>
       </div>
-    {% endif %}
-  </dl>
+      {% assign last_date = page.last_modified_at | default: page.last_updated %}
+      {% if last_date %}
+        <div>
+          <dt>Updated</dt>
+          <dd>{{ last_date | date: '%b %-d, %Y' }}</dd>
+        </div>
+      {% endif %}
+      {% if page.author %}
+        <div>
+          <dt>Author</dt>
+          <dd>{{ page.author }}</dd>
+        </div>
+      {% endif %}
+    </dl>
 
-  <div class="blog-post-tags">
-    {% if url_beginning == '/blog/' %}
-      <a href="{{ year | prepend: '/blog/' | relative_url }}"><i class="fa-solid fa-calendar fa-sm"></i>{{ year }}</a>
-    {% else %}
+    <div class="blog-post-tags">
       <span><i class="fa-solid fa-calendar fa-sm"></i>{{ year }}</span>
-    {% endif %}
-    {% if tags != '' %}
-      {% for tag in page.tags %}
-        {% if url_beginning == '/blog/' %}
-          <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}"><i class="fa-solid fa-hashtag fa-sm"></i>{{ tag }}</a>
-        {% else %}
+      {% if tags != '' %}
+        {% for tag in page.tags %}
           <span><i class="fa-solid fa-hashtag fa-sm"></i>{{ tag }}</span>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-    {% if categories != '' %}
-      {% for category in page.categories %}
-        {% if url_beginning == '/blog/' %}
-          <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}"><i class="fa-solid fa-tag fa-sm"></i>{{ category }}</a>
-        {% else %}
+        {% endfor %}
+      {% endif %}
+      {% if categories != '' %}
+        {% for category in page.categories %}
           <span><i class="fa-solid fa-tag fa-sm"></i>{{ category }}</span>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-  </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  {% endunless %}
 
   <article class="post-content blog-post-content">
     {% if page.toc and page.toc.beginning %}
@@ -106,40 +96,40 @@ layout: default
       </div>
     </div>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const relatedEntries = Array.from(document.querySelectorAll(".related-publications .bibliography > li"));
+      document.addEventListener('DOMContentLoaded', function () {
+        const relatedEntries = Array.from(document.querySelectorAll('.related-publications .bibliography > li'));
         if (relatedEntries.length === 0) return;
 
         const assignFallbackNumbers = () => {
           const relatedCount = relatedEntries.length;
           relatedEntries.forEach((entry, index) => {
-            const numberElement = entry.querySelector(".publication-number");
+            const numberElement = entry.querySelector('.publication-number');
             if (numberElement) numberElement.textContent = relatedCount - index;
           });
         };
 
         fetch("{{ '/publications/' | relative_url }}")
           .then((response) => {
-            if (!response.ok) throw new Error("Could not load publications page");
+            if (!response.ok) throw new Error('Could not load publications page');
             return response.text();
           })
           .then((html) => {
             const documentParser = new DOMParser();
-            const publicationsDocument = documentParser.parseFromString(html, "text/html");
-            const publicationEntries = Array.from(publicationsDocument.querySelectorAll(".bibliography > li"));
-            if (publicationEntries.length === 0) throw new Error("No publication entries found");
+            const publicationsDocument = documentParser.parseFromString(html, 'text/html');
+            const publicationEntries = Array.from(publicationsDocument.querySelectorAll('.bibliography > li'));
+            if (publicationEntries.length === 0) throw new Error('No publication entries found');
             const publicationCount = publicationEntries.length;
             const publicationNumbersByKey = new Map();
 
             publicationEntries.forEach((entry, index) => {
-              const publicationKey = entry.querySelector(".publication-entry-column")?.id;
+              const publicationKey = entry.querySelector('.publication-entry-column')?.id;
               if (publicationKey) publicationNumbersByKey.set(publicationKey, publicationCount - index);
             });
 
             let assignedCount = 0;
             relatedEntries.forEach((entry) => {
-              const publicationKey = entry.querySelector(".publication-entry-column")?.id;
-              const numberElement = entry.querySelector(".publication-number");
+              const publicationKey = entry.querySelector('.publication-entry-column')?.id;
+              const numberElement = entry.querySelector('.publication-number');
               if (publicationKey && numberElement && publicationNumbersByKey.has(publicationKey)) {
                 numberElement.textContent = publicationNumbersByKey.get(publicationKey);
                 assignedCount += 1;
@@ -154,7 +144,7 @@ layout: default
   {% endif %}
 
   {% comment %}
-  related_posts section intentionally disabled
+    related_posts section intentionally disabled
   {% endcomment %}
 
   {% if site.disqus_shortname and page.disqus_comments %}

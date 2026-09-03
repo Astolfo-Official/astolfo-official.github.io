@@ -2,10 +2,7 @@
 layout: page
 title: Research
 permalink: /research/
-description: >
-  I am foucsing on developing and using theoretical tools to study light–matter
-  interactions, with interests spanning molecular simulation, electronic
-  structure theory, and AI-enhanced scientific research.
+description: I develop theoretical and computational tools for light–matter interactions, molecular simulation, electronic structure, and AI-enhanced scientific research.
 nav: true
 nav_order: 1
 _styles: |
@@ -14,6 +11,8 @@ _styles: |
   }
 
   .research-page {
+    --research-accent: #2f6f73;
+    --research-accent-soft: rgba(47, 111, 115, 0.09);
     margin-top: 0;
   }
 
@@ -23,29 +22,26 @@ _styles: |
   }
 
   .research-entry {
-    padding: clamp(1rem, 2.5vw, 1.25rem);
+    padding: 0.9rem;
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(252, 126, 175, 0.1), transparent 44%),
-      var(--global-card-bg-color);
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+    background: var(--global-card-bg-color);
     transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
-      transform 0.2s ease;
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
   }
 
   .research-entry:hover {
-    border-color: color-mix(in srgb, var(--global-theme-color) 38%, var(--global-divider-color));
-    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.09);
+    border-color: color-mix(in srgb, var(--research-accent) 42%, var(--global-divider-color));
+    box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
   }
 
   .research-entry__inner {
     display: grid;
-    grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: minmax(10.5rem, 13.5rem) minmax(0, 1fr);
+    gap: clamp(1rem, 2.2vw, 1.35rem);
     align-items: center;
   }
 
@@ -57,12 +53,14 @@ _styles: |
     position: relative;
     display: block;
     justify-self: center;
-    width: min(100%, 14.5rem);
-    height: clamp(10.75rem, 17vw, 12rem);
+    width: min(100%, 13.5rem);
+    height: clamp(8.75rem, 13vw, 9.75rem);
     overflow: hidden;
     border: 1px solid var(--global-divider-color);
-    border-radius: 8px;
-    background: var(--global-bg-color);
+    border-radius: 6px;
+    background:
+      linear-gradient(135deg, var(--research-accent-soft), rgba(182, 74, 107, 0.05)),
+      var(--global-bg-color);
   }
 
   .research-entry__media,
@@ -90,32 +88,12 @@ _styles: |
     object-position: center;
   }
 
-  .research-entry__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
-    margin-bottom: 0.9rem;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--global-theme-color);
-  }
-
-  .research-entry__eyebrow::before {
-    content: "";
-    width: 2.2rem;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.55;
-  }
-
   .research-entry__title {
-    margin-bottom: 0.85rem;
+    margin: 0 0 0.65rem;
     color: var(--global-text-color);
-    font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+    font-size: clamp(1.2rem, 2vw, 1.45rem);
     font-weight: 700;
-    line-height: 1.14;
+    line-height: 1.24;
     letter-spacing: 0;
   }
 
@@ -129,9 +107,15 @@ _styles: |
   }
 
   .research-entry__description {
-    margin-bottom: 1rem;
-    font-size: 1rem;
-    line-height: 1.75;
+    margin-bottom: 0;
+    color: var(--global-text-color-light);
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  html[data-theme="dark"] .research-page {
+    --research-accent: #74c7c0;
+    --research-accent-soft: rgba(116, 199, 192, 0.13);
   }
 
   @media (max-width: 767.98px) {
@@ -146,7 +130,7 @@ _styles: |
 
     .research-entry__media {
       width: min(100%, 18rem);
-      height: 15rem;
+      height: 12rem;
     }
 
     .research-entry {
@@ -163,20 +147,21 @@ _styles: |
     <p>{{ page.description }}</p>
   </header>
 
-  {% if sorted_projects.size > 0 %}
-    <div class="research-stream">
-      {% for project in sorted_projects %}
-        {% if project.redirect %}
-          {% assign project_url = project.redirect %}
-        {% else %}
-          {% assign project_url = project.url | relative_url %}
-        {% endif %}
-        {% assign project_anchor = project.title | slugify %}
-        <section id="{{ project_anchor }}" class="research-entry">
-          <div class="research-entry__inner{% unless project.img %} research-entry__inner--text-only{% endunless %}">
-            {% if project.img %}
-              <a class="research-entry__media" href="{{ project_url }}">
-                {%
+{% if sorted_projects.size > 0 %}
+
+<div class="research-stream">
+{% for project in sorted_projects %}
+{% if project.redirect %}
+{% assign project_url = project.redirect %}
+{% else %}
+{% assign project_url = project.url | relative_url %}
+{% endif %}
+{% assign project_anchor = project.title | slugify %}
+<section id="{{ project_anchor }}" class="research-entry">
+<div class="research-entry__inner{% unless project.img %} research-entry__inner--text-only{% endunless %}">
+{% if project.img %}
+<a class="research-entry__media" href="{{ project_url }}">
+{%
                   include figure.liquid
                   loading="eager"
                   path=project.img
@@ -184,19 +169,20 @@ _styles: |
                   alt=project.title
                   class="research-entry__image"
                 %}
-              </a>
-            {% endif %}
-            <div class="research-entry__copy">
-              <h3 class="research-entry__title">
-                <a href="{{ project_url }}">{{ project.title }}</a>
-              </h3>
-              <p class="research-entry__description">{{ project.description }}</p>
-            </div>
-          </div>
-        </section>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p>No research projects are available yet.</p>
-  {% endif %}
+</a>
+{% endif %}
+<div class="research-entry__copy">
+<h3 class="research-entry__title">
+<a href="{{ project_url }}">{{ project.title }}</a>
+</h3>
+<p class="research-entry__description">{{ project.description }}</p>
+</div>
+</div>
+</section>
+{% endfor %}
+</div>
+{% else %}
+<p>No research projects are available yet.</p>
+{% endif %}
+
 </div>

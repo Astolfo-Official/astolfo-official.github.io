@@ -57,6 +57,43 @@
 
   <!-- Entry bib key -->
   {% assign publication_research_area = entry.research_area | default: entry.researcharea %}
+  {% assign publication_authorship = 'coauthor' %}
+  {% assign publication_first_author = entry.author_array | first %}
+  {% assign publication_first_author_last = publication_first_author.last | regex_replace: '[*∗†‡§¶‖&^]', '' %}
+  {% if site.scholar.last_name contains publication_first_author_last %}
+    {% if site.scholar.first_name contains publication_first_author.first %}
+      {% assign publication_authorship = 'first-author' %}
+    {% endif %}
+  {% endif %}
+  {% assign publication_citation_count = 0 %}
+  {% assign publication_title_key = entry.title
+    | strip_html
+    | downcase
+    | remove: ' '
+    | remove: '-'
+    | remove: '–'
+    | remove: '—'
+    | remove: ':'
+    | remove: '{'
+    | remove: '}'
+  %}
+  {% for paper in site.data.citations.papers %}
+    {% assign citation_title_key = paper[1].title
+      | strip_html
+      | downcase
+      | remove: ' '
+      | remove: '-'
+      | remove: '–'
+      | remove: '—'
+      | remove: ':'
+      | remove: '{'
+      | remove: '}'
+    %}
+    {% if publication_title_key == citation_title_key %}
+      {% assign publication_citation_count = paper[1].citations %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
   {% assign publication_entry_column_class = '' %}
   {% if site.enable_publication_thumbnails %}
     {% if is_publications_page %}
@@ -74,6 +111,9 @@
   <div
     id="{{ entry.key }}"
     class="{{ publication_entry_column_class }} publication-entry-column"
+    data-authorship="{{ publication_authorship }}"
+    data-citations="{{ publication_citation_count }}"
+    data-publication-year="{{ entry.year }}"
     data-research-area="{{ publication_research_area | downcase | escape }}"
   >
     {% assign title_link = '' %}
@@ -269,22 +309,31 @@
         {% if entry.year %} {{ entry.year }}{% endif %}
         {% if entry.volume %}, {{ entry.volume }}{% endif %}
         {% if entry.number and has_embedded_issue == false %} ({{ entry.number }}){% endif %}
-        {% if normalized_pages != blank %}, {{ normalized_pages }}{% endif %}{{ entrylocation }}{{ additional_info }}.
+        {% if normalized_pages != blank %}, {{ normalized_pages }}{% endif -%}
+        {{- entrylocation -}}
+        {{- additional_info }}.
       {% elsif proceedings contains entry.type %}
         <em>In {{ entry.booktitle }}</em>
-        {% if entry.year %}, {{ entry.year }}{% endif %}{{ entrylocation }}{{ additional_info }}.
+        {% if entry.year %}, {{ entry.year }}{% endif -%}
+        {{- entrylocation -}}
+        {{- additional_info }}.
       {% elsif thesis contains entry.type %}
         <em>{{ entry.school }}</em>
-        {% if entry.year %}, {{ entry.year }}{% endif %}{{ entrylocation }}{{ additional_info }}.
+        {% if entry.year %}, {{ entry.year }}{% endif -%}
+        {{- entrylocation -}}
+        {{- additional_info }}.
       {% elsif has_arxiv_identifier %}
         <em>arXiv</em>
         {% if entry.year %} {{ entry.year }}{% endif %}
-        {% if arxiv_identifier %}, arXiv:{{ arxiv_identifier | remove: 'arXiv:' }}{% endif %}{{ additional_info }}.
+        {% if arxiv_identifier %}, arXiv:{{ arxiv_identifier | remove: 'arXiv:' }}{% endif -%}
+        {{- additional_info }}.
       {% else %}
         {% if entry.publisher %}
           <em>{{ entry.publisher }}</em>
         {% endif %}
-        {% if entry.year %} {{ entry.year }}{% endif %}{{ entrylocation }}{{ additional_info }}.
+        {% if entry.year %} {{ entry.year }}{% endif -%}
+        {{- entrylocation -}}
+        {{- additional_info }}.
       {% endif %}
     </div>
     {% if entry.note %}
@@ -295,14 +344,29 @@
     {% if has_resource_links %}
       <div class="resource-links">
         {% if entry.data %}
-          <a href="{% if entry.data contains '://' %}{{ entry.data }}{% else %}{{ entry.data | relative_url }}{% endif %}" class="resource-link" role="button">Data</a>
+          <a
+            href="{% if entry.data contains '://' %}{{ entry.data }}{% else %}{{ entry.data | relative_url }}{% endif %}"
+            class="resource-link"
+            role="button"
+            >Data</a
+          >
         {% endif %}
         {% if entry.code %}
-          <a href="{% if entry.code contains '://' %}{{ entry.code }}{% else %}{{ entry.code | relative_url }}{% endif %}" class="resource-link" role="button">Code</a>
+          <a
+            href="{% if entry.code contains '://' %}{{ entry.code }}{% else %}{{ entry.code | relative_url }}{% endif %}"
+            class="resource-link"
+            role="button"
+            >Code</a
+          >
         {% endif %}
         {% assign site_link = entry.site | default: entry.website %}
         {% if site_link %}
-          <a href="{% if site_link contains '://' %}{{ site_link }}{% else %}{{ site_link | relative_url }}{% endif %}" class="resource-link" role="button">Site</a>
+          <a
+            href="{% if site_link contains '://' %}{{ site_link }}{% else %}{{ site_link | relative_url }}{% endif %}"
+            class="resource-link"
+            role="button"
+            >Site</a
+          >
         {% endif %}
         {% if arxiv_link != blank %}
           <a href="{{ arxiv_link }}" class="resource-link" role="button" aria-label="View preprint on arXiv">arXiv</a>
@@ -506,5 +570,4 @@
       </div>
     {% endif %}
   </div>
-
 </div>

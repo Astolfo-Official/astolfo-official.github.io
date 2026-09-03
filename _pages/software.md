@@ -3,7 +3,7 @@ layout: page
 title: Software
 permalink: /software/
 description: >
-  We build software infrastructure for computational light-matter science and beyond.
+  I build or contribute to open-source infrastructure for computational light-matter science and autonomous simulation workflows.
 nav: true
 nav_order: 3.5
 _styles: |
@@ -12,52 +12,56 @@ _styles: |
   }
 
   .software-page {
+    --software-accent: #2f6f73;
     margin-top: 0;
   }
 
   .software-list {
     display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
   }
 
   .software-card {
-    padding: clamp(1rem, 2.5vw, 1.25rem);
+    display: flex;
+    min-width: 0;
+    height: 100%;
+    padding: 0.9rem;
     border: 1px solid var(--global-divider-color);
     border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(252, 126, 175, 0.1), transparent 44%),
-      var(--global-card-bg-color);
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+    background: var(--global-card-bg-color);
     transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
-      transform 0.2s ease;
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
   }
 
   .software-card:hover {
-    border-color: color-mix(in srgb, var(--global-theme-color) 38%, var(--global-divider-color));
-    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.09);
+    border-color: color-mix(in srgb, var(--software-accent) 42%, var(--global-divider-color));
+    box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
   }
 
   .software-card__inner {
-    display: grid;
-    grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr);
-    gap: 1.25rem;
-    align-items: center;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .software-card__media {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: min(100%, 14.5rem);
-    height: clamp(10.75rem, 17vw, 12rem);
-    justify-self: center;
+    width: 100%;
+    aspect-ratio: 632 / 461;
+    flex: 0 0 auto;
     overflow: hidden;
     border: 1px solid var(--global-divider-color);
-    border-radius: 8px;
-    background: var(--global-bg-color);
+    border-radius: 6px;
+    background: #fff;
   }
 
   .software-card__media figure,
@@ -76,6 +80,11 @@ _styles: |
     object-position: center;
   }
 
+  .software-card__copy {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
   .software-card__monogram {
     color: var(--global-theme-color);
     font-family: var(--global-font-family);
@@ -85,11 +94,12 @@ _styles: |
   }
 
   .software-card__title {
-    margin-bottom: 0.7rem;
+    margin: 0 0 0.6rem;
     color: var(--global-text-color);
-    font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+    font-size: clamp(1.1rem, 1.7vw, 1.3rem);
     font-weight: 700;
-    line-height: 1.14;
+    line-height: 1.28;
+    text-align: center;
   }
 
   .software-card__title a {
@@ -102,25 +112,29 @@ _styles: |
   }
 
   .software-card__description {
-    margin-bottom: 1rem;
+    margin-bottom: 0;
     color: var(--global-text-color-light);
-    font-size: 1rem;
-    line-height: 1.75;
+    font-size: 0.88rem;
+    line-height: 1.62;
   }
 
-  @media (max-width: 767.98px) {
+  html[data-theme="dark"] .software-page {
+    --software-accent: #74c7c0;
+  }
+
+  @media (max-width: 960px) {
+    .software-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .software-list {
+      grid-template-columns: 1fr;
+    }
+
     .software-card {
       padding: 1rem;
-    }
-
-    .software-card__inner {
-      grid-template-columns: 1fr;
-      gap: 1.35rem;
-    }
-
-    .software-card__media {
-      width: min(100%, 18rem);
-      height: 15rem;
     }
   }
 ---
@@ -164,7 +178,7 @@ _styles: |
                 include figure.liquid
                 loading="eager"
                 path=software_image
-                sizes="(min-width: 768px) 15rem, 18rem"
+                sizes="(min-width: 961px) 24rem, (min-width: 641px) 50vw, 100vw"
                 alt=software_name
                 class=software_image_class
               %}
@@ -182,5 +196,6 @@ _styles: |
         </div>
       </article>
     {% endfor %}
+
   </div>
 </div>
