@@ -3,7 +3,7 @@ layout: page
 ---
 {% assign collection = site[page.collection] %}
 {% assign finished_notes = collection | where: 'status', 'Finished' %}
-{% assign active_notes = collection | where: 'status', 'Reading' %}
+{% assign active_notes = collection | where: 'status', 'Building' %}
 
 <div class="notes-shelf">
   <header class="page-hero notes-hero">

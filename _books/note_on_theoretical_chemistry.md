@@ -13,7 +13,7 @@ tags:
 date: 2026-04-01
 started: 2022-03-01
 released: 2026
-status: Reading
+status: Building
 buy_link: https://github.com/Astolfo-Official/Note-on-Theoretical-Chemistry
 ---
 
