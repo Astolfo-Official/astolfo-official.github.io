@@ -513,7 +513,7 @@ _styles: |
   </header>
 
 {% assign publication_records = site.data.cv.cv.sections.Publications %}
-{% assign publication_total = publication_records | size %}
+{% assign publication_total = site.data.citations.papers | size %}
 {% assign first_author_total = 0 %}
 {% assign first_author_citation_total = 0 %}
 {% for publication in publication_records %}
@@ -581,7 +581,7 @@ _styles: |
           <dt>Showing</dt>
           <dd aria-live="polite">
             <span id="publication-visible-count">{{ publication_total }}</span>
-            <small>of {{ publication_total }}</small>
+            <small>of <span id="publication-total-count">{{ publication_total }}</span></small>
           </dd>
         </div>
         <div class="publication-stat">
@@ -635,6 +635,7 @@ _styles: |
         (entry) => !entry.classList.contains("unloaded") && !entry.classList.contains("publication-sidebar-filtered")
       );
       const countElement = document.getElementById("publication-visible-count");
+      const totalCountElement = document.getElementById("publication-total-count");
       const citationElement = document.getElementById("publication-visible-citations");
       const firstAuthorCountElement = document.getElementById("publication-visible-first-author-count");
       const firstAuthorCitationElement = document.getElementById("publication-visible-first-author-citations");
@@ -651,6 +652,7 @@ _styles: |
       );
 
       if (countElement) countElement.textContent = visibleEntries.length;
+      if (totalCountElement) totalCountElement.textContent = entries.length;
       if (citationElement) citationElement.textContent = visibleCitations;
       if (firstAuthorCountElement) firstAuthorCountElement.textContent = visibleFirstAuthorEntries.length;
       if (firstAuthorCitationElement) firstAuthorCitationElement.textContent = visibleFirstAuthorCitations;
