@@ -536,7 +536,7 @@ _styles: |
       <p class="home-kicker">Chemical Physics · Light-Matter Interaction</p>
       <h1 class="home-title">Xinwei Ji</h1>
       <p class="home-subtitle">
-        Ph.D. student in Physics and Astronomy at the University of Delaware, working on theoretical and computational tools for molecular light-matter dynamics.
+        Ph.D. student in Department of Physics and Astronomy at the University of Delaware, working on theoretical and computational tools for molecular light-matter dynamics.
       </p>
       <div class="home-actions">
         <a href="{{ '/research/' | relative_url }}"><i class="fa-solid fa-wave-square" aria-hidden="true"></i> Research</a>
